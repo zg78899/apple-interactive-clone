@@ -66,6 +66,7 @@ a {
 
 /* 각 section 영역 */
 .scroll-section {
+  position: relative;
   padding-top: 50vh;
 
   border: 1px solid red;
