@@ -28,7 +28,6 @@ a {
   top: 0;
   left: 0;
   width: 100%;
-
 }
 .local-nav {
   height: 52px;
@@ -83,9 +82,11 @@ a {
   align-items: center;
   justify-content: center;
   height: 3em;
+  top: 35vh;
   font-size: 2.5rem;
   /* background-color: rgba(0, 0, 0, 0.3); */
   margin: 5px 0;
+  opacity: 0;
 }
 
 .main-message p {
@@ -104,10 +105,10 @@ a {
   font-size:3.5rem;
 }
 .description {
+  max-width: 1000px;
   font-size: 1.2rem;
   color: #888;
   padding: 0 1rem;
-  max-width: 1000px;
   margin: 0 auto;
 }
 
@@ -118,8 +119,16 @@ a {
   color: rgba(29, 29, 31);
 }
 .desc-message{
-  font-weight: bold;
   width: 50%;
+  font-weight: bold;
+}
+#scroll-section-2 .b{
+  top: 10%;
+  left:40%;
+}
+#scroll-section-2 .c{
+  top: 15%;
+  left: 45%;
 }
 .pin{
   width: 1px;
@@ -153,7 +162,7 @@ a {
 .sticky-elem{
   display: none;
   position: fixed;
-  top:0;
+  /* top:0; */
   left: 0;
   width:100%;
 }
@@ -175,6 +184,7 @@ a {
     font-size:4vw;
   }
   .description{
+    padding: 0;
     font-size:2rem;
   }
   .description strong{
@@ -189,6 +199,13 @@ a {
   .desc-message{
     width: 20%;
     font-weight: bold;
+  }
+  #scroll-section-2 .b{
+    top: 20%;
+    left:53%;
+  }
+  #scroll-section-2 .c{
+    left: 55%;
   }
   .mid-message{
     font-size: 4vw;
