@@ -129,6 +129,7 @@ a {
 .desc-message{
   width: 50%;
   font-weight: bold;
+  opacity: 0;
 }
 #scroll-section-2 .b{
   top: 10%;
