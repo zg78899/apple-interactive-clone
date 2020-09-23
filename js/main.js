@@ -23,9 +23,14 @@
         messageB: document.querySelector('#scroll-section-0 .main-message.b'),
         messageC: document.querySelector('#scroll-section-0 .main-message.c'),
         messageD: document.querySelector('#scroll-section-0 .main-message.d'),
+        canvas: document.querySelector('#video-canvas-0'),
+        context: document.querySelector('#video-canvas-0').getContext('2d'),
+        videoImages: [],
       },
       values: {
-
+        canvasOpacity: [1, 0, { start: 0.9, end: 1 }],
+        videoImageCount: 300, //이미지 개수
+        imageSquence: [0, 299], //이미지순서 
         messageA_opacity_in: [0, 1, { start: 0.1, end: 0.2 }],
         messageB_opacity_in: [0, 1, { start: 0.3, end: 0.4 }],
         messageC_opacity_in: [0, 1, { start: 0.5, end: 0.6 }],
@@ -68,9 +73,15 @@
         messageC: document.querySelector('#scroll-section-2 .c'),
         pinB: document.querySelector('#scroll-section-2 .b .pin'),
         pinC: document.querySelector('#scroll-section-2 .c .pin'),
+        canvas: document.querySelector('#video-canvas-1'),
+        context: document.querySelector('#video-canvas-1').getContext('2d'),
+        videoImages: [],
 
       },
       values: {
+        canvasOpacity: [1, 0, { start: 0.9, end: 1 }],
+        videoImageCount: 300, //이미지 개수
+        imageSquence: [0, 299], //이미지순서 
         messageA_opacity_in: [0, 1, { start: 0.25, end: 0.3 }],
         messageB_opacity_in: [0, 1, { start: 0.6, end: 0.65 }],
         messageC_opacity_in: [0, 1, { start: 0.87, end: 0.92 }],
@@ -84,7 +95,8 @@
         messageB_translateY_out: [0, -20, { start: 0.68, end: 0.73 }],
         messageC_translateY_out: [0, -20, { start: 0.95, end: 1 }],
         pinB_scaleY: [0.5, 1, { start: 0.6, end: 0.65 }],
-        pinC_scaleY: [0.5, 1, { start: 0.87, end: 0.92 }]
+        pinC_scaleY: [0.5, 1, { start: 0.87, end: 0.92 }],
+
       }
     },
     { //3
@@ -93,14 +105,26 @@
       scrollHeight: 0,
       objs: {
         container: document.querySelector('#scroll-section-3'),
-        canvasCaption:document.querySelector('.canvas-caption')
+        canvasCaption: document.querySelector('.canvas-caption')
       },
-      values:{
+      values: {
 
       }
     },
   ];
 
+  function setCanvasImages() {
+    let imgElem;
+    for (let i = 0; i < sceneInfo[0].values.videoImageCount; i++) {
+      imgElem = new Image();//이미지 객체를 하나 만듦
+      // imgElem = document.createElement('img')
+      imgElem.src = `./video/001/IMG_${6726 + i}.JPG`;
+      sceneInfo[0].objs.videoImages.push(imgElem);
+    }
+    console.log(sceneInfo[0].objs.videoImages)
+  }
+
+  setCanvasImages();
   // 기본적인 레이아웃 함수
   function setLayout() {
     //각 스크롤의 섹션의 높이 세팅
@@ -127,6 +151,10 @@
     }
     console.log('total', totalScrollHeight)
     document.body.setAttribute('id', `show-scene-${currentScene}`);
+
+    const heightRatio = window.innerHeight / 1080;
+    sceneInfo[0].objs.canvas.style.transform = `translate3d(-50%,-50%,0) scale(${heightRatio})`;
+
   }
   //currentYoffset은 현재의 씬이 얼마나 스크롤 되었는지?
   //비율계산 함수
@@ -136,7 +164,7 @@
     //비율 현재 씬에 스크롤된 범위를 비율로 정하기
     const scrollRatio = currentYOffset / scrollHeight
     // 분기처리가 필요하다. /3 번째 함수 객체가 있을 경우에
-    console.log(values)
+    // console.log(values)
     if (values.length == 3) {
       // start - end 사이의 애니메이션 실행
       const partScrollStart = values[2].start * scrollHeight;
@@ -173,6 +201,15 @@
     switch (currentScene) {
       case 0:
         // console.log('0 play');
+        // 인덱스로 사용
+        let sequence = Math.round(calcValues(values.imageSquence, currrentYOffset));
+        //화면에 이미지를 순서대로 보이게 함
+        objs.context.drawImage(objs.videoImages[sequence], 0, 0);
+        //canvas의 마지막 opacity부분
+        objs.canvas.style.opacity = calcValues(values.canvasOpacity, currrentYOffset);
+
+        console.log('sequence', sequence);
+
         if (scrollRatio <= 0.22) {
           //in
           objs.messageA.style.opacity = calcValues(values.messageA_opacity_in, currrentYOffset)
@@ -214,14 +251,14 @@
 
       case 2:
         if (scrollRatio <= 0.32) {
-                // in
-                objs.messageA.style.opacity = calcValues(values.messageA_opacity_in, currrentYOffset);
-                objs.messageA.style.transform = `translate3d(0, ${calcValues(values.messageA_translateY_in, currrentYOffset)}%, 0)`;
-            } else {
-                // out
-                objs.messageA.style.opacity = calcValues(values.messageA_opacity_out,currrentYOffset);
-                objs.messageA.style.transform = `translate3d(0, ${calcValues(values.messageA_translateY_out, currrentYOffset)}%, 0)`;
-            }
+          // in
+          objs.messageA.style.opacity = calcValues(values.messageA_opacity_in, currrentYOffset);
+          objs.messageA.style.transform = `translate3d(0, ${calcValues(values.messageA_translateY_in, currrentYOffset)}%, 0)`;
+        } else {
+          // out
+          objs.messageA.style.opacity = calcValues(values.messageA_opacity_out, currrentYOffset);
+          objs.messageA.style.transform = `translate3d(0, ${calcValues(values.messageA_translateY_out, currrentYOffset)}%, 0)`;
+        }
         if (scrollRatio <= 0.67) {
           objs.messageB.style.opacity = calcValues(values.messageB_opacity_in, currrentYOffset);
           objs.messageB.style.transform = `translate3d(0,${calcValues(values.messageB_translateY_in, currrentYOffset)},0)`;
@@ -236,12 +273,12 @@
           objs.messageC.style.transform = `translate3d(0, ${calcValues(values.messageC_translateY_in, currrentYOffset)}%, 0)`;
           objs.messageC.style.opacity = calcValues(values.messageC_opacity_in, currrentYOffset);
           objs.pinC.style.transform = `scaleY(${calcValues(values.pinC_scaleY, currrentYOffset)})`;
-      } else {
+        } else {
           // out
           objs.messageC.style.transform = `translate3d(0, ${calcValues(values.messageC_translateY_out, currrentYOffset)}%, 0)`;
           objs.messageC.style.opacity = calcValues(values.messageC_opacity_out, currrentYOffset);
           objs.pinC.style.transform = `scaleY(${calcValues(values.pinC_scaleY, currrentYOffset)})`;
-      }
+        }
 
         break;
       case 3:
@@ -274,9 +311,6 @@
     //enterNewScene이 true가 아닐때 return한다 .넘어간다.오동작을 막아주는 코드. 
     playAnimation();
 
-    console.log('prev', prevScrollHeight);
-    console.log('currentScene', currentScene);
-    console.log('yOffset', yOffset);
   }
 
   window.addEventListener('scroll', () => {
@@ -284,11 +318,15 @@
     scrollLoop();
 
   })
-  window.addEventListener('resize', setLayout)
 
   //DOMContentLoaded가 실행시간이 더 빠르다.이미지 등 리소스가 로드되지않아도 html만 로드가 되어도 화면에 보여준다.
   //window.addEventListener('DOMContentLoaded',setLayout);
-  window.addEventListener('load', setLayout);
+  window.addEventListener('load', () => {
+    setLayout();
+    //laod될때 첫 화면에 가장 첫번째 사진을 보이게 함
+    sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
+  });
+  window.addEventListener('resize', setLayout)
 
 
 })();

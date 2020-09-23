@@ -28,6 +28,7 @@ a {
   top: 0;
   left: 0;
   width: 100%;
+  z-index: 10;
 }
 .local-nav {
   height: 52px;
@@ -37,6 +38,7 @@ a {
   top: 45px;
   left: 0;
   width: 100%;
+  z-index: 11;
 }
 
 .global-nav-link,
@@ -69,14 +71,19 @@ a {
   position: relative;
   padding-top: 50vh;
 
-  border: 1px solid red;
+  /* border: 1px solid red; */
 }
 
 #scroll-section-0 h1 {
   /* 기본 font-size:14px; */
+  /* z-index을 사용하기 위해서 position:relative사영 */
+  position: relative;
+  z-index: 99;
+  top: -10vh;
   font-size: 4rem;
   text-align: center;
 }
+
 
 .main-message {
   display: flex;
@@ -166,6 +173,17 @@ a {
   /* top:0; */
   left: 0;
   width:100%;
+}
+.sticky-elem-canvas{
+  top:0;
+  height:100% ;
+  /* background: rgba(29, 29, 31,0.3); */
+}
+.sticky-elem-canvas canvas{
+  position: absolute;
+  top: 50%;
+  left:50%;
+  /* 나머지위치 transform:translate3d(-50%,-50%,0) 가운데 정렬 */
 }
 /* body에 show-scene-숫자 형태의 코드를 스크립트로 붙임 */
 #show-scene-0 #scroll-section-0 .sticky-elem,
