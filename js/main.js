@@ -204,11 +204,11 @@
         if (scrollRatio <= 0.82) {
           // in
           objs.messageD.style.opacity = calcValues(values.messageD_opacity_in, currrentYOffset);
-          objs.messageD.style.transform = `translate3d(0, ${calcValues(values.messageD_translateY_in, currentYOffset)}%, 0)`;
+          objs.messageD.style.transform = `translate3d(0, ${calcValues(values.messageD_translateY_in, currrentYOffset)}%, 0)`;
         } else {
           // out
           objs.messageD.style.opacity = calcValues(values.messageD_opacity_out, currrentYOffset);
-          objs.messageD.style.transform = `translate3d(0, ${calcValues(values.messageD_translateY_out, currentYOffset)}%, 0)`;
+          objs.messageD.style.transform = `translate3d(0, ${calcValues(values.messageD_translateY_out, currrentYOffset)}%, 0)`;
         }
         break;
 
@@ -274,9 +274,9 @@
     //enterNewScene이 true가 아닐때 return한다 .넘어간다.오동작을 막아주는 코드. 
     playAnimation();
 
-    // console.log('prev', prevScrollHeight);
-    // console.log('currentScene', currentScene);
-    // console.log('yOffset', yOffset);
+    console.log('prev', prevScrollHeight);
+    console.log('currentScene', currentScene);
+    console.log('yOffset', yOffset);
   }
 
   window.addEventListener('scroll', () => {
