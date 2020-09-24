@@ -157,6 +157,15 @@
 
   setCanvasImages();
 
+  //메뉴 투명도, 사라짐
+  function checkMenu(){
+   if(yOffset > 44){
+     document.body.classList.add('local-nav-sticky');
+   }else{
+     document.body.classList.remove('local-nav-sticky')
+   }
+  }
+
   // 기본적인 레이아웃 함수
   function setLayout() {
     //각 스크롤의 섹션의 높이 세팅
@@ -549,6 +558,7 @@
   window.addEventListener('scroll', () => {
     yOffset = window.pageYOffset;
     scrollLoop();
+    checkMenu();
 
   })
 
