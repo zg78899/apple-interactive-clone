@@ -502,27 +502,23 @@
             console.log('스크롤 시작')
             objs.canvas.classList.remove('sticky');
             objs.canvas.style.marginTop = `${scrollHeight * 0.4}px`;
+
             
-          //opacity 시작 시점
-          values.canvasCaption_opacity[2].start = values.canvas_sacale[2].end
-          values.canvasCaption_opacity[2].end = values.canvasCaption_opacity[2].start + 0.1;
-          //translate 시작점 끝점
-          values.canvasCaption_translateY[2].start = values.canvasCaption_opacity[2].start;
-          values.canvasCaption_translateY[2].end = values.canvasOpacity_opacity[2].end;
-          
-          console.log(obj.canvasCaption)
-          //동작
-          objs.canvasCaption.style.opacity = calcValues(values.canvasCaption_opacity,currrentYOffset);
-          objs.canvasCaption.style.transform = `translate3d(0,${calcValues(values.canvasCaption_translateY,currrentYOffset)}%,0)`;
-          
+            //opacity 시작 시점
+            values.canvasCaption_opacity[2].start = values.canvas_sacale[2].end;
+            values.canvasCaption_opacity[2].end = values.canvasCaption_opacity[2].start + 0.1;
+            values.canvasCaption_translateY[2].start = values.canvasCaption_opacity[2].start;
+            values.canvasCaption_translateY[2].end = values.canvasCaption_opacity[2].end;
+            
+            objs.canvasCaption.style.opacity = calcValues(values.canvasCaption_opacity, currrentYOffset);
+            objs.canvasCaption.style.transform = `translate3d(0,${calcValues(values.canvasCaption_translateY,currrentYOffset)}%,0)`;
+
           }
-
-
-
         }
         break;
     }
   }
+  
 
   //스크롤을 관리하는 함수
   function scrollLoop() {
