@@ -29,6 +29,7 @@ a {
   left: 0;
   width: 100%;
   z-index: 10;
+  /* background: rgba(255, 255, 255, 0.9); */
 }
 .local-nav {
   height: 52px;
@@ -39,6 +40,7 @@ a {
   left: 0;
   width: 100%;
   z-index: 11;
+  /* background: rgba(255, 255, 255, 0.9); */
 }
 
 .global-nav-link,
@@ -155,6 +157,7 @@ a {
   display: block;
  color: rgba(29, 29, 31);; 
 }
+
 .canvas-caption{
   color:#888;
   font-size:1.2rem;
@@ -193,6 +196,16 @@ a {
 #show-scene-3 #scroll-section-3 .sticky-elem {
   display:block;
 
+}
+#scroll-section-3{
+  display: flex;
+  flex-direction: column;
+  align-items: center ;
+}
+.image-blend-canvas.sticky{
+  position: fixed;
+  /* top이 화면 가득 올여야하지만 안맞음 */
+  top:0;
 }
 
 /* media 데스크탑 화면 최소 너비 1024px이하로는 변하지말라는 의미/ 이상이면 변하라는 의미 */

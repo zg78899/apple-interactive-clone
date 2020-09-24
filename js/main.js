@@ -106,14 +106,25 @@
       scrollHeight: 0,
       objs: {
         container: document.querySelector('#scroll-section-3'),
-        canvasCaption: document.querySelector('.canvas-caption')
+        canvasCaption: document.querySelector('.canvas-caption'),
+        canvas: document.querySelector('.image-blend-canvas'),
+        context: document.querySelector('.image-blend-canvas').getContext('2d'),
+        imagePath: [
+          './images/blend-image-1.jpg',
+          './images/blend-image-2.jpg'
+        ],
+        images: []
       },
       values: {
-
+        rect1X: [0, 0, { start: 0, end: 0 }],//canvas의 왼쪽하얀 박스
+        rect2X: [0, 0, { start: 0, end: 0 }], // 오른쩍 하얀박스
+        rectStartY: 0,
+        imageBlendY: [0, 0, { start: 0, end: 0 }],
       }
     },
   ];
 
+  // canvas의 이미지를 세팅해주는 함수
   function setCanvasImages() {
     //첫번째 section의 이미지 처리
     let imgElem;
@@ -130,7 +141,13 @@
       imgElem2.src = `./video/002/IMG_${7027 + i}.JPG`;
       sceneInfo[2].objs.videoImages.push(imgElem2);
     }
-
+    let imgElem3;
+    for (let i = 0; i < sceneInfo[3].objs.imagePath.length; i++) {
+      imgElem3 = new Image();
+      imgElem3.src = sceneInfo[3].objs.imagePath[i];
+      sceneInfo[3].objs.images.push(imgElem3)
+    }
+    console.log(sceneInfo[3].objs.images)
     console.log(sceneInfo[0].objs.videoImages)
     console.log(sceneInfo[0].objs.videoImages)
   }
@@ -266,14 +283,14 @@
       case 2:
         let sequence2 = Math.round(calcValues(values.imageSquence, currrentYOffset));
         objs.context.drawImage(objs.videoImages[sequence2], 0, 0);
-        
+
         // 처음 시작과 마지막 투명도
-        if(scrollRatio <= 0.5){
+        if (scrollRatio <= 0.5) {
           //in
-         objs.canvas.style.opacity = calcValues(values.canvasOpacity_in,currrentYOffset);
-        }else{
+          objs.canvas.style.opacity = calcValues(values.canvasOpacity_in, currrentYOffset);
+        } else {
           //out
-          objs.canvas.style.opacity = calcValues(values.canvasOpacity_out,currrentYOffset);
+          objs.canvas.style.opacity = calcValues(values.canvasOpacity_out, currrentYOffset);
         }
 
         if (scrollRatio <= 0.32) {
@@ -306,9 +323,143 @@
           objs.pinC.style.transform = `scaleY(${calcValues(values.pinC_scaleY, currrentYOffset)})`;
         }
 
+        //currentScene 3에서 쓰는 캔버스를 미리 그려주기 시작
+        //const는 블록레벨 스코프를 가지기 때문에 변수를 지켜줄수 있음
+        if (scrollRatio > 0.9) {
+          const objs = sceneInfo[3].objs;
+          const values = sceneInfo[3].values;
+          const widthRatio = window.innerWidth / objs.canvas.width;
+          const heightRatio = window.innerHeight / objs.canvas.height;
+          let canvasScaleRatio;
+          // 비율에 따라 캔버스의 비율을 다르게함
+          if (widthRatio <= heightRatio) {
+            //캔버스보다 창이 긴경우
+            canvasScaleRatio = heightRatio;
+            console.log('heightRatio로 결정');
+          } else {
+            //캔버스보다 창이 납작한 경우
+            canvasScaleRatio = widthRatio;
+            console.log('widthRatio 로 결정');
+          }
+          objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+          //3번째 캔버스의 색을 흰색으로 바꿈 ,fillStyle를 사용한다.
+          objs.context.fillStyle = 'white';
+          //3번째 캔버스에 이미지 삽입
+          objs.context.drawImage(objs.images[0], 0, 0)
+
+          //캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
+          const recalculatedInnerWidth = window.innerWidth / canvasScaleRatio;
+          // const recalculatedInnerHeight = window.innerHeight / canvasScaleRatio;
+
+          const whiteRectWidth = recalculatedInnerWidth * 0.15;
+
+          values.rect1X[0] = (objs.canvas.width - recalculatedInnerWidth) / 2;
+          values.rect1X[1] = values.rect1X[0] - whiteRectWidth;
+          values.rect2X[0] = values.rect1X[0] + recalculatedInnerWidth - whiteRectWidth;
+          values.rect2X[1] = values.rect2X[0] + whiteRectWidth;
+
+          //움직이는 것이 아닌 고정값을 사용
+          objs.context.fillRect(
+            parseInt(values.rect1X[0]),
+            0,
+            parseInt(whiteRectWidth),
+            objs.canvas.height)
+
+          objs.context.fillRect(
+            parseInt(values.rect2X[0]),
+            0,
+            parseInt(whiteRectWidth),
+            objs.canvas.height);
+        }
         break;
+
       case 3:
-        console.log('3 play');
+        //가로 세로 모두 꽈 차게 하기 위해 세팅(계산 필요)
+        const widthRatio = window.innerWidth / objs.canvas.width;
+        const heightRatio = window.innerHeight / objs.canvas.height;
+        let canvasScaleRatio;
+        // 비율에 따라 캔버스의 비율을 다른게 하낟.
+        if (widthRatio <= heightRatio) {
+          //캔버스보다 창이 긴경우
+          canvasScaleRatio = heightRatio;
+          console.log('heightRatio로 결정');
+        } else {
+          //캔버스보다 창이 납작한 경우
+          canvasScaleRatio = widthRatio;
+          console.log('widthRatio 로 결정');
+        }
+        objs.canvas.style.transform = `scale(${canvasScaleRatio})`;
+        //3번째 캔버스의 색을 흰색으로 바꿈 ,fillStyle를 사용한다.
+        objs.context.fillStyle = 'white';
+        //3번째 캔버스에 이미지 삽입
+        objs.context.drawImage(objs.images[0], 0, 0)
+
+        //캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
+        const recalculatedInnerWidth = window.innerWidth / canvasScaleRatio;
+        const recalculatedInnerHeight = window.innerHeight / canvasScaleRatio;
+
+        //values.rectStartY값이 있을때
+        if (!values.rectStartY) {
+          // values.rectStartY = objs.canvas.getBoundingClientRect().top;
+          values.rectStartY = objs.canvas.offsetTop +
+            (objs.canvas.height - objs.canvas.height * canvasScaleRatio) / 2;
+
+          //타이밍
+          values.rect1X[2].start = (window.innerHeight / 2) / scrollHeight;
+          values.rect2X[2].start = (window.innerHeight / 2) / scrollHeight;
+          values.rect1X[2].end = values.rectStartY / scrollHeight;
+          values.rect2X[2].end = values.rectStartY / scrollHeight;
+          console.log('top', values.rectStartY)
+        }
+
+
+        const whiteRectWidth = recalculatedInnerWidth * 0.15;
+
+        values.rect1X[0] = (objs.canvas.width - recalculatedInnerWidth) / 2;
+        values.rect1X[1] = values.rect1X[0] - whiteRectWidth;
+        values.rect2X[0] = values.rect1X[0] + recalculatedInnerWidth - whiteRectWidth;
+        values.rect2X[1] = values.rect2X[0] + whiteRectWidth;
+
+        //3번 section이 시작되는 부분
+        console.log('3start')
+
+        //fillRect(x축,y축,width,height)
+        //좌우 흰 박스 그리기
+        // objs.context.fillRect(values.rect1X[0],0,parseInt(whiteRectWidth),recalculatedInnerHeight);
+        // objs.context.fillRect(values.rect2X[0],0,parseInt(whiteRectWidth),recalculatedInnerHeight);
+
+        objs.context.fillRect(
+          parseInt(calcValues(values.rect1X, currrentYOffset)),
+          0,
+          parseInt(whiteRectWidth),
+          objs.canvas.height);
+
+        objs.context.fillRect(
+          parseInt(calcValues(values.rect2X, currrentYOffset)),
+          0,
+          parseInt(whiteRectWidth),
+          objs.canvas.height);
+
+        // console.log(widthRatio, heightRatio);
+        console.log(recalculatedInnerWidth, recalculatedInnerHeight);
+        if (scrollRatio < values.rect1X[2].end) {
+          step = 1;
+          console.log('scrollRatio', scrollRatio);
+          console.log('캔버스 닿기 전')
+          objs.canvas.classList.remove('sticky')
+        } else {
+          //닿은 이후 //posiiton fixed
+          step = 2;
+          console.log('캔버스에 닿은 이후')
+          console.log('scrollRatio', scrollRatio);
+          objs.canvas.classList.add('sticky');
+          //원래크기의 캔버스 - 조정된 크기의 캔버스 / 2
+          objs.canvas.style.top = `-${(objs.canvas.height - objs.canvas.height * canvasScaleRatio) / 2}px`;
+          //닿은 이후의 스크롤
+          // if(){
+          //   step =3;
+          // }
+        }
         break;
     }
   }
