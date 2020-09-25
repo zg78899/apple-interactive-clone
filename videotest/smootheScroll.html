@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  body {
+    height: 500vh;
+  }
+  .box {
+    background-color: orange;
+    position: fixed;
+    top: 100px;
+    left: 0;
+    width: 0;
+    height: 100px;
+    
+  }
+</style>
+
+<body>
+  <div class="box"></div>
+
+  <script>
+    const $box = document.querySelector('.box');
+    let acc = 0.1;
+    let delayedYoffset = 0;
+    let rafId;
+    let rafState;
+
+    window.addEventListener('scroll', () => {
+      // $box.style.width =`${window.pageYOffset}px`;
+      if(!rafState){
+        rafId = requestAnimationFrame(loop);
+        rafState = true;
+      }
+      
+    });
+    function loop() {
+      delayedYoffset = delayedYoffset + (pageYOffset - delayedYoffset) * acc;
+      $box.style.width = `${delayedYoffset}px`;
+      console.log('loop') //loop함수는 계석 실행된다. 
+      rafId = requestAnimationFrame(loop);
+      //음수일때가 생길 수 있기 때문에 차이만이 중요하므로 절대값 처리
+      if(Math.abs(pageYOffset - delayedYoffset) <1){
+        cancelAnimationFrame(rafId);
+        rafState = false;
+      }
+
+      
+    };
+    loop();
+
+  </script>
+
+</body>
+
+</html>
