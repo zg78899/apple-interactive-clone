@@ -9,6 +9,12 @@
   let currentScene = 0; //현재 눈앞에 보고있는 scroll-section(씬)
   let enterNewScene = false; //새로운 scene이 시작되는 순간시작되는 변수
 
+  //loop함수의 변수들
+  let acc = 0.1;
+  let delayedYOffset =0;
+  let rafId ;
+  let rafState ;
+
   //1.스크롤의 높이 ,2.
   const sceneInfo = [
     {
@@ -245,9 +251,9 @@
       case 0:
         // console.log('0 play');
         // 인덱스로 사용
-        let sequence = Math.round(calcValues(values.imageSquence, currrentYOffset));
-        //화면에 이미지를 순서대로 보이게 함
-        objs.context.drawImage(objs.videoImages[sequence], 0, 0);
+        // let sequence = Math.round(calcValues(values.imageSquence, currrentYOffset));
+        // //화면에 이미지를 순서대로 보이게 함
+        // objs.context.drawImage(objs.videoImages[sequence], 0, 0);
         //canvas의 마지막 opacity부분
         objs.canvas.style.opacity = calcValues(values.canvasOpacity, currrentYOffset);
 
@@ -554,11 +560,39 @@
     playAnimation();
 
   }
+  //가속도 처리 함수
+  function loop(){
+    //가속도 // 부드럽게 처리
+    delayedYOffset += (delayedYOffset - yOffset) * acc;
+
+    const currrentYOffset = delayedYOffset - prevScrollHeight;
+    const objs = sceneInfo[currentScene].objs;
+    const values = sceneInfo[currentScene].values;
+
+
+    if(currentScene === 0){
+      console.log('loop');
+      let sequence = Math.round(calcValues(values.imageSquence, currrentYOffset));
+      objs.context.drawImage(objs.videoImages[sequence], 0, 0);
+    }
+    rafId = requestAnimationFrame(loop); 
+    if(Math.abs(delayedYOffset - pageYOffset) < 1){
+      cancelAnimationFrame(loop);
+      rafState = false;
+    }
+  }
 
   window.addEventListener('scroll', () => {
     yOffset = window.pageYOffset;
     scrollLoop();
     checkMenu();
+    //3번째 화면의 영상부분을 자연스럽게 만들 코드
+    window.addEventListener('scroll',()=>{
+      if(!rafState){
+        rafId = requestAnimationFrame(loop);
+        rafState = true;
+      };
+    })
 
   })
 

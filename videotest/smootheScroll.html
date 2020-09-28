@@ -55,6 +55,77 @@
     loop();
 
   </script>
+  <script>
+   const $box = document.querySelector('.box');
+   let delayedYoffset = 0;
+   let acc = 0.1;
+   let timer;
+   let timerState;
+
+   window.addEventListener('scroll',()=>{
+    if(!timerState){
+      timer = requestAnimationFrame(loop);
+      timerState = true;
+    }
+   });
+   function loop(){
+    delayedYoffset = delayedYoffset+(pageYOffset - delayedYoffset)* acc;
+   $box.style.width = `${delayedYoffset}px`;
+   console.log('loop');//
+   timer = requestAnimationFrame(loop);//loop함수가 계속해서 실행됨
+   //조건일때 requestAnimationFrame 멈춤
+   if(Math.abs(pageYOffset - delayedYoffset) <1){
+    cancelAnimationFrame(timer);
+    timerState = false;
+   }
+   };
+   loop()
+  </script>
+  body{
+    height:500vh;
+
+  }
+  .box{
+    background:orange;
+    position:fixed;
+    top:100px;
+    left:0
+    width:0;
+    height:100px;
+
+  }
+  <div class="box"></div>
+  <script>
+    const $box = document.querySelector('.box');
+    let acc = 0.1;
+    let delayedYoffset = 0;
+    let rafId;
+    let rafState;
+
+    window.addEventListener('scroll',()=>{
+      // $box.style.height = `${pageYOffset}px`;
+      if(!rafState){
+        rafId = requestAnimationFrame(loop);
+        rafState = true;
+      }
+    });
+
+    function loop(){
+      delayedYoffset += (delayedYoffset - pageYOffset)* acc;
+     $box.style.width =`${delayedYoffset}px`;
+     //무한이 갯거 반복되는 함수다.
+     console.log('loop');
+     rafId = requestAnimationFrame(loop);
+     if(Math.abs(delayedYoffset - pageYOffset) <  1){
+       cancelAnimationFrame(rafId);
+       rafState = false;
+     }
+
+    }
+    loop();
+
+
+  </script>
 
 </body>
 
