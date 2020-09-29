@@ -20,6 +20,10 @@ a {
   color: rgba(29, 29, 31);
   text-decoration: none;
 }
+/* loading중일때 스크롤을 잠군다.overflow:hidden을 사용한다. */
+body.before-load{
+  overflow: hidden;
+}
 
 .global-nav {
   position: absolute;

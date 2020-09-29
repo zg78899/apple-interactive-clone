@@ -160,7 +160,7 @@
     console.log(sceneInfo[0].objs.videoImages)
   }
 
-  
+
 
   //메뉴 투명도, 사라짐
   function checkMenu() {
@@ -537,7 +537,6 @@
     }
   }
 
-
   //스크롤을 관리하는 함수
   function scrollLoop() {
     enterNewScene = false
@@ -572,7 +571,7 @@
     //새로운 씬이 아닐때에만 실행하겠다.
     if (!enterNewScene) {
       //currenttScene 첫번째와 세번째일때만 실행
-      if (currentScene  === 0 || currentScene === 2) {
+      if (currentScene === 0 || currentScene === 2) {
         //currentYOffset의 값에 yOffset은 delayedYOffset을 이용하여 가속도가 생긴 값을 사용한다.
         const currrentYOffset = delayedYOffset - prevScrollHeight;
         const objs = sceneInfo[currentScene].objs;
@@ -596,45 +595,49 @@
 
   }
 
-///이벤트 핸들러
+  ///이벤트 핸들러
 
-  // loop();
-  window.addEventListener('scroll', () => {
-    yOffset = window.pageYOffset;
-    scrollLoop();
-    checkMenu();
 
-    if (!rafState) {
-      rafId = requestAnimationFrame(loop);
-      rafState = true;
-    }
-
-  });
   //DOMContentLoaded가 실행시간이 더 빠르다.이미지 등 리소스가 로드되지않아도 html만 로드가 되어도 화면에 보여준다.
   //window.addEventListener('DOMContentLoaded',setLayout);
+  //load 중일때는 값들이 초기화가 되었지읺는다.
   window.addEventListener('load', () => {
     document.body.classList.remove('before-load');
     //loading은 보이지만않는 요소이기 때문에 메뉴의 요소를 누를 수 없게 만든다.그렇디 땜누에 젝를 해주어야한다.
     //여기서 loading을 바로 지우면 자연스럽게 지우기 힘들다.document.body.removeChlild(document.querySelector('.loading'));
     //트랜지션이 끝이 나면 loading 요소를 제거해 준다.
-
     setLayout();
-
     //laod될때 첫 화면에 가장 첫번째 사진을 보이게 함
     sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
 
+    //scroll
+    window.addEventListener('scroll', () => {
+      yOffset = window.pageYOffset;
+      //load중일때 scroll을 하면 scrolllop 함수가 호출되기 때문에 애러가 발생하게된다.
+      //해결하는 방법은 scorll 이벤트가 발생하는것을 load이벤트가 발생한 이후에 동작하게 해주면 된다.
+      scrollLoop();
+      checkMenu();
+
+      if (!rafState) {
+        rafId = requestAnimationFrame(loop);
+        rafState = true;
+      }
+    });
+    //resize
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 900) {
+        setLayout();
+      }
+      //resize 되었을때 sceneInfo[3].values.restStartY = 0 으로 초기화한다.
+      sceneInfo[3].values.rectStartY = 0;
+    });
+    
+    //orientationchange 모바일 기기를 방향을 바꿀때 발생하는 이벤트
+    window.addEventListener('orientationchange', setLayout);
   });
-  window.addEventListener('resize', ()=>{
-    if(window.innerWidth > 900){
-      setLayout();
-    }
-    //resize 되었을때 sceneInfo[3].values.restStartY = 0 으로 초기화한다.
-    sceneInfo[3].values.rectStartY =0;
-  });
-  //orientationchange 모바일 기기를 방향을 바꿀때 발생하는 이벤트
-  window.addEventListener('orientationchange',setLayout);
+
   //loading에 transitionend라는 이벤트를 바인딩 시켜서 이벤트 객체를 통해 현재 자신의 요소를 removeChild시킨다.
-  document.querySelector('.loading').addEventListener('transitionend',(e)=>{
+  document.querySelector('.loading').addEventListener('transitionend', (e) => {
     document.body.removeChild(e.currentTarget);
   })
 
