@@ -602,6 +602,7 @@
   //window.addEventListener('DOMContentLoaded',setLayout);
   //load 중일때는 값들이 초기화가 되었지읺는다.
   window.addEventListener('load', () => {
+
     document.body.classList.remove('before-load');
     //loading은 보이지만않는 요소이기 때문에 메뉴의 요소를 누를 수 없게 만든다.그렇디 땜누에 젝를 해주어야한다.
     //여기서 loading을 바로 지우면 자연스럽게 지우기 힘들다.document.body.removeChlild(document.querySelector('.loading'));
@@ -609,6 +610,22 @@
     setLayout();
     //laod될때 첫 화면에 가장 첫번째 사진을 보이게 함
     sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
+
+     let tempYOffset = yOffset;
+     let tempScrollCount = 0; //5px씩 몇번했는지 count할 변수
+    //스크롤을 했다면 / 스크롤을 안했다면 자동 스크롤을 하지마라
+     if(yOffset > 0){
+      let siId = setInterval(()=>{
+        window.scrollTo(0,tempYOffset);
+        tempYOffset+=5;
+        if(tempScrollCount > 20){
+          clearInterval(siId);
+        }
+        tempScrollCount++; 
+      },20);
+     }
+     
+    
 
     //scroll
     window.addEventListener('scroll', () => {

@@ -20,24 +20,28 @@ a {
   color: rgba(29, 29, 31);
   text-decoration: none;
 }
+
 /* loading중일때 스크롤을 잠군다.overflow:hidden을 사용한다. */
-body.before-load{
+body.before-load {
   overflow: hidden;
 }
-.container{
+
+.container {
   /* 아이폰에서 가로스크롤 방지 */
   overflow-x: hidden;
 }
+
 .global-nav {
   position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 10;
-    width: 100%;
-    height: 44px;
-    padding: 0 1rem;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  height: 44px;
+  padding: 0 1rem;
   /* background: rgba(255, 255, 255, 0.9); */
 }
+
 .local-nav {
   height: 52px;
   border-bottom: 1px solid #ddd;
@@ -49,16 +53,17 @@ body.before-load{
   z-index: 11;
   /* background: rgba(255, 255, 255, 0.9); */
 }
+
 .local-nav-sticky .local-nav {
-	position: fixed;
-	top: 0;
-	background: rgba(255, 255, 255, 0.1);
+  position: fixed;
+  top: 0;
+  background: rgba(255, 255, 255, 0.1);
   /* for iPhone */
   /* vendor prefix을 붙여줘야함 */
-	-webkit-backdrop-filter: saturate(180%) blur(15px);
-	-moz-backdrop-filter: saturate(180%) blur(15px);
-	-o-backdrop-filter: saturate(180%) blur(15px);
-	backdrop-filter: saturate(180%) blur(15px);
+  -webkit-backdrop-filter: saturate(180%) blur(15px);
+  -moz-backdrop-filter: saturate(180%) blur(15px);
+  -o-backdrop-filter: saturate(180%) blur(15px);
+  backdrop-filter: saturate(180%) blur(15px);
 }
 
 .global-nav-link,
@@ -123,15 +128,18 @@ body.before-load{
   text-align: center;
 
 }
-.main-message small{
+
+.main-message small {
   display: block;
-  font-size:1.2rem;
+  font-size: 1.2rem;
   margin-bottom: 0.5em;
 
 }
-#scroll-section-2 .main-message{
-  font-size:3.5rem;
+
+#scroll-section-2 .main-message {
+  font-size: 3.5rem;
 }
+
 .description {
   max-width: 1000px;
   font-size: 1.2rem;
@@ -146,179 +154,214 @@ body.before-load{
   font-size: 3rem;
   color: rgba(29, 29, 31);
 }
-.desc-message{
+
+.desc-message {
   width: 50%;
   font-weight: bold;
   opacity: 0;
 }
-#scroll-section-2 .b{
+
+#scroll-section-2 .b {
   top: 10%;
-  left:40%;
+  left: 40%;
 }
-#scroll-section-2 .c{
+
+#scroll-section-2 .c {
   top: 15%;
   left: 45%;
 }
-.pin{
+
+.pin {
   width: 1px;
   height: 100px;
-  background-color:rgba(29, 29, 31);
+  background-color: rgba(29, 29, 31);
 }
-.mid-message{
-  padding:0 1rem ;
-  font-size:2rem;
-  color:#888;
+
+.mid-message {
+  padding: 0 1rem;
+  font-size: 2rem;
+  color: #888;
   margin: 0 auto;
   max-width: 1000px;
 }
-.mid-message strong{
+
+.mid-message strong {
   display: block;
- color: rgba(29, 29, 31);; 
+  color: rgba(29, 29, 31);
+  ;
 }
 
-.canvas-caption{
+.canvas-caption {
   max-width: 1000px;
-  margin:-24rem 0 auto;
+  margin: -24rem 0 auto;
   padding: 0 1rem;
-  color:#888;
-  font-size:1.2rem;
+  color: #888;
+  font-size: 1.2rem;
 }
-.footer{
- display: flex;
- justify-content: center;
- align-items: center;
- height: 7rem;
- background: darkorange;
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 7rem;
+  background: darkorange;
 }
-.sticky-elem{
+
+.sticky-elem {
   display: none;
   position: fixed;
   /* top:0; */
   left: 0;
-  width:100%;
+  width: 100%;
 }
-.sticky-elem-canvas{
-  top:0;
-  height:100% ;
+
+.sticky-elem-canvas {
+  top: 0;
+  height: 100%;
   /* background: rgba(29, 29, 31,0.3); */
 }
-.sticky-elem-canvas canvas{
+
+.sticky-elem-canvas canvas {
   position: absolute;
   top: 50%;
-  left:50%;
+  left: 50%;
   /* 나머지위치 transform:translate3d(-50%,-50%,0) 가운데 정렬 */
 }
+
 /* body에 show-scene-숫자 형태의 코드를 스크립트로 붙임 */
 #show-scene-0 #scroll-section-0 .sticky-elem,
 #show-scene-1 #scroll-section-1 .sticky-elem,
 #show-scene-2 #scroll-section-2 .sticky-elem,
 #show-scene-3 #scroll-section-3 .sticky-elem {
-  display:block;
-  will-change: transform,opacity;
+  display: block;
+  will-change: transform, opacity;
 
 }
-#scroll-section-3{
+
+#scroll-section-3 {
   display: flex;
   flex-direction: column;
-  align-items: center ;
+  align-items: center;
 }
-.image-blend-canvas.sticky{
+
+.image-blend-canvas.sticky {
   position: fixed;
   /* top이 화면 가득 올여야하지만 안맞음 */
-  top:0;
+  top: 0;
 }
+
 /* loading  */
-.loading{
+.loading {
   display: flex;
   align-items: center;
   justify-content: center;
   position: fixed;
-  top:0;
-  left:0;
-  right:0;
+  top: 0;
+  left: 0;
+  right: 0;
   bottom: 0;
   z-index: 100;
   background: #fff;
   opacity: 0;
   /* trasition을 먹이기 위해서 opacity을 준다. 하지만 이것은 누에 안보이게만 하는 것이기에 완전히 없애주는 작업도 해야한다. */
-  transition: 0.5s ;
+  transition: 0.5s;
 }
-.before-load .loading{
+
+.before-load .container {
+  display: none;
+}
+
+.before-load .loading {
   opacity: 1;
 
 }
-@keyframes loading-spin{
-  100%{
+
+@keyframes loading-spin {
+  100% {
     transform: rotate(360deg);
   }
 }
-@keyframes loading-circle-ani{
-  0%{
+
+@keyframes loading-circle-ani {
+  0% {
     stroke-dashoffset: 157;
   }
-  75%{
-    stroke-dashoffset:-147;
+
+  75% {
+    stroke-dashoffset: -147;
   }
-  100%{
+
+  100% {
     stroke-dashoffset: -157;
   }
 }
-.loading-circle{
-  width:54px;
-  height:54px;
+
+.loading-circle {
+  width: 54px;
+  height: 54px;
   animation: loading-spin 3s infinite;
 }
-.loading-circle circle{
+
+.loading-circle circle {
   stroke: black;
   stroke-width: 4;
-/* document.querySelector('.loading-circle circle').getTotalLength()로 총 길이를 알수 았다. */
+  /* document.querySelector('.loading-circle circle').getTotalLength()로 총 길이를 알수 았다. */
   stroke-dasharray: 157;
   stroke-dashoffset: 0;
   fill: transparent;
-  animation:loading-circle-ani 1s infinite;
+  animation: loading-circle-ani 1s infinite;
 }
 
 /* media 데스크탑 화면 최소 너비 1024px이하로는 변하지말라는 의미/ 이상이면 변하라는 의미 */
-@media (min-width:1024px){
-  #scroll-section-0 h1{
+@media (min-width:1024px) {
+  #scroll-section-0 h1 {
     font-size: 9vw;
   }
-  .main-message{
-    font-size:4vw;
+
+  .main-message {
+    font-size: 4vw;
   }
-  .description{
+
+  .description {
     padding: 0;
-    font-size:2rem;
+    font-size: 2rem;
   }
-  .description strong{
+
+  .description strong {
     font-size: 6rem;
   }
-  #scroll-section-2 .main-message{
+
+  #scroll-section-2 .main-message {
     font-size: 6vw;
   }
-  .main-message small{
+
+  .main-message small {
     font-size: 1.5vw;
   }
-  .desc-message{
+
+  .desc-message {
     width: 20%;
     font-weight: bold;
   }
-  #scroll-section-2 .b{
+
+  #scroll-section-2 .b {
     top: 20%;
-    left:53%;
+    left: 53%;
   }
-  #scroll-section-2 .c{
+
+  #scroll-section-2 .c {
     left: 55%;
   }
-  .mid-message{
-    width:1000px;
+
+  .mid-message {
+    width: 1000px;
     padding: 0;
     font-size: 4vw;
   }
-  .canvas-caption{
-    margin-top:-8rem;
+
+  .canvas-caption {
+    margin-top: -8rem;
     padding: 0;
     font-size: 2rem;
   }
 }
-
