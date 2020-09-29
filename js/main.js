@@ -625,21 +625,28 @@
     });
     //resize
     window.addEventListener('resize', () => {
+      // landscape 모드에서 대부분의 디바이스의 너비는 900이 넘어간다.
       if (window.innerWidth > 900) {
         setLayout();
+        //resize 되었을때 sceneInfo[3].values.restStartY = 0 으로 초기화한다.
+        sceneInfo[3].values.rectStartY = 0;
       }
-      //resize 되었을때 sceneInfo[3].values.restStartY = 0 으로 초기화한다.
-      sceneInfo[3].values.rectStartY = 0;
     });
-    
+
     //orientationchange 모바일 기기를 방향을 바꿀때 발생하는 이벤트
-    window.addEventListener('orientationchange', setLayout);
+    //canvas의 크기를 셋팅하는 문제가 있다.
+    window.addEventListener('orientationchange', () => {
+    setTimeout(setLayout, 500);
+    });
+
+    //loading에 transitionend라는 이벤트를 바인딩 시켜서 이벤트 객체를 통해 현재 자신의 요소를 removeChild시킨다.
+    document.querySelector('.loading').addEventListener('transitionend', (e) => {
+    document.body.removeChild(e.currentTarget);
+    })
+
   });
 
-  //loading에 transitionend라는 이벤트를 바인딩 시켜서 이벤트 객체를 통해 현재 자신의 요소를 removeChild시킨다.
-  document.querySelector('.loading').addEventListener('transitionend', (e) => {
-    document.body.removeChild(e.currentTarget);
-  })
+
 
   setCanvasImages();
 
