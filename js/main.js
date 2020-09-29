@@ -8,12 +8,11 @@
   let prevScrollHeight = 0 //현재 스크롤의 위치(yOffset)보다 이전에 위치한 스크롤 섹션드의 스크롤 높이값의합
   let currentScene = 0; //현재 눈앞에 보고있는 scroll-section(씬)
   let enterNewScene = false; //새로운 scene이 시작되는 순간시작되는 변수
-
-  //loop함수의 변수들
+  //loop함수의 변수
   let acc = 0.1;
-  let delayedYOffset =0;
-  let rafId ;
-  let rafState ;
+  let delayedYOffset = 0;
+  let rafId;
+  let rafState;
 
   //1.스크롤의 높이 ,2.
   const sceneInfo = [
@@ -161,15 +160,15 @@
     console.log(sceneInfo[0].objs.videoImages)
   }
 
-  setCanvasImages();
+  
 
   //메뉴 투명도, 사라짐
-  function checkMenu(){
-   if(yOffset > 44){
-     document.body.classList.add('local-nav-sticky');
-   }else{
-     document.body.classList.remove('local-nav-sticky')
-   }
+  function checkMenu() {
+    if (yOffset > 44) {
+      document.body.classList.add('local-nav-sticky');
+    } else {
+      document.body.classList.remove('local-nav-sticky')
+    }
   }
 
   // 기본적인 레이아웃 함수
@@ -213,7 +212,7 @@
     const scrollRatio = currentYOffset / scrollHeight
     // 분기처리가 필요하다. /3 번째 함수 객체가 있을 경우에
     // console.log(values)
-    if (values.length == 3) {
+    if (values.length === 3) {
       // start - end 사이의 애니메이션 실행
       const partScrollStart = values[2].start * scrollHeight;
       const partScrollEnd = values[2].end * scrollHeight;
@@ -250,14 +249,16 @@
     switch (currentScene) {
       case 0:
         // console.log('0 play');
+        //시쿼스에 따라 이미지가 바뀜
         // 인덱스로 사용
         // let sequence = Math.round(calcValues(values.imageSquence, currrentYOffset));
         // //화면에 이미지를 순서대로 보이게 함
         // objs.context.drawImage(objs.videoImages[sequence], 0, 0);
         //canvas의 마지막 opacity부분
+
         objs.canvas.style.opacity = calcValues(values.canvasOpacity, currrentYOffset);
 
-        console.log('sequence', sequence);
+        // console.log('sequence', sequence);
 
         if (scrollRatio <= 0.22) {
           //in
@@ -299,8 +300,9 @@
         break;
 
       case 2:
-        let sequence2 = Math.round(calcValues(values.imageSquence, currrentYOffset));
-        objs.context.drawImage(objs.videoImages[sequence2], 0, 0);
+        //시쿼스에 따라 이미지가 바뀜
+        // let sequence2 = Math.round(calcValues(values.imageSquence, currrentYOffset));
+        // objs.context.drawImage(objs.videoImages[sequence2], 0, 0);
 
         // 처음 시작과 마지막 투명도
         if (scrollRatio <= 0.5) {
@@ -419,6 +421,7 @@
         const recalculatedInnerHeight = window.innerHeight / canvasScaleRatio;
 
         //values.rectStartY값이 있을때
+        //resize 이벤트 곧 창의 크기가 바뀔때 다시 정의를 해준다.
         if (!values.rectStartY) {
           // values.rectStartY = objs.canvas.getBoundingClientRect().top;
           values.rectStartY = objs.canvas.offsetTop +
@@ -518,22 +521,22 @@
             objs.canvas.classList.remove('sticky');
             objs.canvas.style.marginTop = `${scrollHeight * 0.4}px`;
 
-            
+
             //opacity 시작 시점
             values.canvasCaption_opacity[2].start = values.canvas_sacale[2].end;
             values.canvasCaption_opacity[2].end = values.canvasCaption_opacity[2].start + 0.1;
             values.canvasCaption_translateY[2].start = values.canvasCaption_opacity[2].start;
             values.canvasCaption_translateY[2].end = values.canvasCaption_opacity[2].end;
-            
+
             objs.canvasCaption.style.opacity = calcValues(values.canvasCaption_opacity, currrentYOffset);
-            objs.canvasCaption.style.transform = `translate3d(0,${calcValues(values.canvasCaption_translateY,currrentYOffset)}%,0)`;
+            objs.canvasCaption.style.transform = `translate3d(0,${calcValues(values.canvasCaption_translateY, currrentYOffset)}%,0)`;
 
           }
         }
         break;
     }
   }
-  
+
 
   //스크롤을 관리하는 함수
   function scrollLoop() {
@@ -544,12 +547,14 @@
       prevScrollHeight += sceneInfo[i].scrollHeight;
 
     }
-    if (yOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
+    //값을 Yoffset이 아닌 감속을 적용한 변수인 deleayedYOffset을 적용한다.
+    if (delayedYOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
       enterNewScene = true;
       currentScene++;
       document.body.setAttribute('id', `show-scene-${currentScene}`);
     }
-    if (yOffset < prevScrollHeight) {
+    //값을 Yoffset이 아닌 감속을 적용한 변수인 deleayedYOffset을 적용한다.
+    if (delayedYOffset < prevScrollHeight) {
       enterNewScene = true
       if (currentScene === 0) return;
       currentScene--;
@@ -561,49 +566,80 @@
 
   }
   //가속도 처리 함수
-  function loop(){
-    //가속도 // 부드럽게 처리
-    delayedYOffset += (delayedYOffset - yOffset) * acc;
+  function loop() {
+    //캔버스에 가속도 부드럽게 처리
+    delayedYOffset = delayedYOffset + (yOffset - delayedYOffset) * acc;
+    //새로운 씬이 아닐때에만 실행하겠다.
+    if (!enterNewScene) {
+      //currenttScene 첫번째와 세번째일때만 실행
+      if (currentScene  === 0 || currentScene === 2) {
+        //currentYOffset의 값에 yOffset은 delayedYOffset을 이용하여 가속도가 생긴 값을 사용한다.
+        const currrentYOffset = delayedYOffset - prevScrollHeight;
+        const objs = sceneInfo[currentScene].objs;
+        const values = sceneInfo[currentScene].values;
 
-    const currrentYOffset = delayedYOffset - prevScrollHeight;
-    const objs = sceneInfo[currentScene].objs;
-    const values = sceneInfo[currentScene].values;
-
-
-    if(currentScene === 0){
-      console.log('loop');
-      let sequence = Math.round(calcValues(values.imageSquence, currrentYOffset));
-      objs.context.drawImage(objs.videoImages[sequence], 0, 0);
+        let sequence = Math.round(calcValues(values.imageSquence, currrentYOffset));
+        console.log('sequence', sequence);
+        //해당하는 시퀀스 이미지 존재할 때만 그려준다.
+        if (objs.videoImages[sequence]) {
+          objs.context.drawImage(objs.videoImages[sequence], 0, 0);
+        }
+      }
     }
-    rafId = requestAnimationFrame(loop); 
-    if(Math.abs(delayedYOffset - pageYOffset) < 1){
-      cancelAnimationFrame(loop);
+
+    rafId = requestAnimationFrame(loop);
+
+    if (Math.abs(yOffset - delayedYOffset) < 1) {
+      cancelAnimationFrame(rafId);
       rafState = false;
     }
+
   }
 
+///이벤트 핸들러
+
+  // loop();
   window.addEventListener('scroll', () => {
     yOffset = window.pageYOffset;
     scrollLoop();
     checkMenu();
-    //3번째 화면의 영상부분을 자연스럽게 만들 코드
-    window.addEventListener('scroll',()=>{
-      if(!rafState){
-        rafId = requestAnimationFrame(loop);
-        rafState = true;
-      };
-    })
 
-  })
+    if (!rafState) {
+      rafId = requestAnimationFrame(loop);
+      rafState = true;
+    }
 
+  });
   //DOMContentLoaded가 실행시간이 더 빠르다.이미지 등 리소스가 로드되지않아도 html만 로드가 되어도 화면에 보여준다.
   //window.addEventListener('DOMContentLoaded',setLayout);
   window.addEventListener('load', () => {
+    document.body.classList.remove('before-load');
+    //loading은 보이지만않는 요소이기 때문에 메뉴의 요소를 누를 수 없게 만든다.그렇디 땜누에 젝를 해주어야한다.
+    //여기서 loading을 바로 지우면 자연스럽게 지우기 힘들다.document.body.removeChlild(document.querySelector('.loading'));
+    //트랜지션이 끝이 나면 loading 요소를 제거해 준다.
+
     setLayout();
+
     //laod될때 첫 화면에 가장 첫번째 사진을 보이게 함
     sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
+
   });
-  window.addEventListener('resize', setLayout)
+  window.addEventListener('resize', ()=>{
+    if(window.innerWidth > 900){
+      setLayout();
+    }
+    //resize 되었을때 sceneInfo[3].values.restStartY = 0 으로 초기화한다.
+    sceneInfo[3].values.rectStartY =0;
+  });
+  //orientationchange 모바일 기기를 방향을 바꿀때 발생하는 이벤트
+  window.addEventListener('orientationchange',setLayout);
+  //loading에 transitionend라는 이벤트를 바인딩 시켜서 이벤트 객체를 통해 현재 자신의 요소를 removeChild시킨다.
+  document.querySelector('.loading').addEventListener('transitionend',(e)=>{
+    document.body.removeChild(e.currentTarget);
+  })
+
+  setCanvasImages();
+
 
 
 })();

@@ -217,6 +217,56 @@ a {
   /* top이 화면 가득 올여야하지만 안맞음 */
   top:0;
 }
+/* loading  */
+.loading{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top:0;
+  left:0;
+  right:0;
+  bottom: 0;
+  z-index: 100;
+  background: #fff;
+  opacity: 0;
+  /* trasition을 먹이기 위해서 opacity을 준다. 하지만 이것은 누에 안보이게만 하는 것이기에 완전히 없애주는 작업도 해야한다. */
+  transition: 0.5s ;
+}
+.before-load .loading{
+  opacity: 1;
+
+}
+@keyframes loading-spin{
+  100%{
+    transform: rotate(360deg);
+  }
+}
+@keyframes loading-circle-ani{
+  0%{
+    stroke-dashoffset: 157;
+  }
+  75%{
+    stroke-dashoffset:-147;
+  }
+  100%{
+    stroke-dashoffset: -157;
+  }
+}
+.loading-circle{
+  width:54px;
+  height:54px;
+  animation: loading-spin 3s infinite;
+}
+.loading-circle circle{
+  stroke: black;
+  stroke-width: 4;
+/* document.querySelector('.loading-circle circle').getTotalLength()로 총 길이를 알수 았다. */
+  stroke-dasharray: 157;
+  stroke-dashoffset: 0;
+  fill: transparent;
+  animation:loading-circle-ani 1s infinite;
+}
 
 /* media 데스크탑 화면 최소 너비 1024px이하로는 변하지말라는 의미/ 이상이면 변하라는 의미 */
 @media (min-width:1024px){
