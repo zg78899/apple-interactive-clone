@@ -102,15 +102,7 @@ body.before-load {
   font-size: 0.8rem;
 }
 
-/* 각 section 영역 */
-.scroll-section {
-  position: relative;
-  padding-top: 50vh;
-
-  /* border: 1px solid red; */
-}
-
-#scroll-section-0 h1 {
+#scroll-section-0 h1 ,#scroll-section-4 h1{
   /* 기본 font-size:14px; */
   /* z-index을 사용하기 위해서 position:relative사영 */
   position: relative;
@@ -119,7 +111,13 @@ body.before-load {
   font-size: 4rem;
   text-align: center;
 }
+/* 각 section 영역 */
+.scroll-section {
+  position: relative;
+  padding-top: 50vh;
 
+  /* border: 1px solid red; */
+}
 
 .main-message {
   display: flex;
@@ -131,6 +129,12 @@ body.before-load {
   /* background-color: rgba(0, 0, 0, 0.3); */
   margin: 5px 0;
   opacity: 0;
+}
+.main-message.b{
+  font-size:3.5rem;
+}
+.main-message.c{
+  font-size:4.5rem;
 }
 
 .main-message p {
@@ -266,7 +270,8 @@ footer .site-links li a:hover{
 #show-scene-0 #scroll-section-0 .sticky-elem,
 #show-scene-1 #scroll-section-1 .sticky-elem,
 #show-scene-2 #scroll-section-2 .sticky-elem,
-#show-scene-3 #scroll-section-3 .sticky-elem {
+#show-scene-3 #scroll-section-3 .sticky-elem,
+#show-scene-3 #scroll-section-4 .sticky-elem {
   display: block;
   will-change: transform, opacity;
 }
@@ -344,10 +349,42 @@ footer .site-links li a:hover{
   fill: transparent;
   animation: loading-circle-ani 1s infinite;
 }
-.normal-content{
-  margin-bottom: 10rem;
-  
+/* 연필의 path */
+.pencil-logo{
+left: 50%;
+top:50%;
+width:100vw;
+transform: translate(-10%,-50%);
+
 }
+.pencil{
+  left:auto;
+  top:auto;
+  right:-10%;
+  bottom: -80%;
+  width:3.5vw;
+  transform: rotate(-120deg);
+}
+.ribbon-path{
+  left:50%;
+  top:50%;
+  min-width:850px;
+  transform:rotate(-50%,-50%);
+}
+.ribbon-path path{
+  fill:none;
+  stroke: #ff0044;
+  stroke-width: 62;;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1401;
+  stroke-dashoffset: 1401;
+}
+
+.normal-content{
+  padding: 20vh 0;
+}
+
 #map{
   width: auto;
   height: 400px;
@@ -357,12 +394,18 @@ footer .site-links li a:hover{
 
 /* media 데스크탑 화면 최소 너비 1024px이하로는 변하지말라는 의미/ 이상이면 변하라는 의미 */
 @media (min-width:1024px) {
-  #scroll-section-0 h1 {
+  #scroll-section-0 h1,#scroll-section-4 h1 {
     font-size: 9vw;
   }
 
   .main-message {
     font-size: 4vw;
+  }
+  .main-message.b{
+    font-size:4vw;
+  }
+  .main-message.c{
+    font-size:10vw;
   }
 
   .description {

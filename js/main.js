@@ -7,7 +7,7 @@
   let yOffset = 0; //window.pageYoffset대신 쓸 변수
   let prevScrollHeight = 0 //현재 스크롤의 위치(yOffset)보다 이전에 위치한 스크롤 섹션드의 스크롤 높이값의합
   let currentScene = 0; //현재 눈앞에 보고있는 scroll-section(씬)
-  let enterNewScene = false; //새로운 scene이 시작되는 순간시작되는 변수
+  let enterNewScene = false; //새로운 scene이 시작되는 순간시작되는 순간 true
   //loop함수의 변수
   let acc = 0.1;
   let delayedYOffset = 0;
@@ -101,7 +101,6 @@
         messageC_translateY_out: [0, -20, { start: 0.95, end: 1 }],
         pinB_scaleY: [0.5, 1, { start: 0.6, end: 0.65 }],
         pinC_scaleY: [0.5, 1, { start: 0.87, end: 0.92 }],
-
       }
     },
     { //3
@@ -129,6 +128,37 @@
         BlendHeight: [0, 0, { start: 0, end: 0 }], ///애니메이션이 시작되는 순간은 캔버스가 위에 닿을때 
       }
     },
+    {//4
+      type:'sticky',
+      heightnum:3,
+      scrollHeight:0,
+      objs:{
+        container:document.querySelector('#scroll-section-4'),
+        messageA:document.querySelector('#scroll-section-4 .main-message.a'),
+        messageB:document.querySelector('#scroll-section-4 .main-message.b'),
+        pencilLogo:document.querySelector('#scroll-section-4 .pencil-logo'),
+        pencil:document.querySelector('#scroll-section-4 .pencil'),
+        ribbonPath:document.querySelector('.ribbon-path path')
+      },
+      values:{
+        messageA_opacity_in: [0, 1, { start: 0.1, end: 0.2 }],
+        messageB_opacity_in: [0, 1, { start: 0.4, end: 0.5 }],
+        messageA_opacity_out: [1, 0, { start: 0.3, end: 0.4 }],
+        messageB_opacity_out: [1, 0, { start: 0.6, end: 0.7 }],
+        messageA_translateY_in: [20, 0, { start: 0.1, end: 0.2 }],
+        messageA_translateY_out: [0, -20, { start: 0.3, end: 0.4 }],
+        pencilLogo_width_in: [1000, 200, { start: 0.1, end: 0.4 }],
+				pencilLogo_width_out: [200, 50, { start: 0.4, end: 0.8 }],
+				pencilLogo_translateX_in: [-10, -20, { start: 0.2, end: 0.4 }],
+				pencilLogo_translateX_out: [-20, -50, { start: 0.4, end: 0.8 }],
+        pencilLogo_opacity_out: [1, 0, { start: 0.8, end: 0.9 }],
+        pencil_right: [-10, 70, { start: 0.3, end: 0.8 }],
+				pencil_bottom: [-80, 100, { start: 0.3, end: 0.8 }],
+        pencil_rotate: [-120, -200, { start: 0.3, end: 0.8 }],
+        path_dashoffset_in: [1401, 0, { start: 0.2, end: 0.4 }],
+				path_dashoffset_out: [0, -1401, { start: 0.6, end: 0.8 }]
+      }
+    }
   ];
 
   // canvas의 이미지를 세팅해주는 함수
@@ -158,8 +188,6 @@
     // console.log(sceneInfo[0].objs.videoImages)
     // console.log(sceneInfo[0].objs.videoImages)
   }
-
-
 
   //메뉴 투명도, 사라짐
   function checkMenu() {
@@ -534,6 +562,47 @@
           }
         }
         break;
+      case 4:
+      if(scrollHeight <= 0.25){
+        //in 
+        objs.messageA.style.opacity = calcValues(values.messageA_opacity_in,currrentYOffset);
+        objs.messageA.style.transform = `translate3d(0,${calcValues(values.messageA_translateY_in,currrentYOffset)}%,0)`;
+      }else{
+        //out
+        objs.messageA.style.opacity  = calcValues(values.messageA_opacity_out,currrentYOffset);
+        objs.messageA.style.transform = `translate3d(0,${calcValues(values.messageA_translateY_out,currrentYOffset)}%,0)`;
+      }
+      if(scrollHeight <= 0.55){
+        //in
+        objs.messageB.style.opacity = calcValues(values.messageB_opacity_in,currrentYOffset);
+      }else {
+        //out
+        obj.messageB.style.opacity = calcValues(values.messageB_opacity_out,currrentYOffset);
+      }
+      //크기가 커져도 깨지지안흔ㄴ svg의 장점을 살리기 위해 tranform scale대신 width조정
+      if(scrollRATIO <= 0.4){
+        objs.pencilLogo.style.width = `${calcValues(valuse.pencilLogo_width_in,currrentYOffset)}vw`;
+        objs.pencilLogo.style.transform = `translate3d(${calcValues(values.pencilLogo_translateX_in,currrentYOffset)}%,-50%)`;
+
+      }else{
+        objs.pencilLogo.style.width = `${calcValues(values.pencilLogo_width_out,currrentYOffset)}vw`;
+        objs.pencilLogo.style.tranform = `translate3d(${calcValues(values.pencilLogo_translateX_out,currrentYOffset)}%,-50%)`;
+
+      }
+      //빨간 리본 패스(줄 긋기)
+      if(scrollRatio <= 0.5){
+        //in
+        objs.ribbonPath.style.strokeDashoffset = calcValues(valuse.path_dashoffset_in,currrentYOffset);
+      }else{
+        //off
+        objs.ribbonPath.style.strokeDashoffset = calcValues(values.path_dashoffset_out,currrentYOffset);
+      }
+      objs.pencilLogo.style.opacity = calcValues(values.pencilLogo_opacity_out,currrentYOffset);
+      objs.pencil.style.right = `${calcValues(values.pencil_right,currrentYOffset)}%`;
+      objs.pencil.style.bottom = `${calcValues(values.pencil_bottom,currrentYOffset)}%`;
+      objs.pencil.style.transform = `rotate(${calcValues(values.pencil_rotate,currrentYOffset)}deg)`;
+
+      break;
     }
   }
 
