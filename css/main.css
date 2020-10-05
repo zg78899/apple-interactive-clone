@@ -25,7 +25,18 @@ a {
 body.before-load {
   overflow: hidden;
 }
-
+.clearfix::after,
+.clearfix::before{
+  content: "";
+  display: block;
+  clear: both;
+}
+.float-right{
+  float:right
+}
+.float-left{
+  float: left;
+}
 .container {
   /* 아이폰에서 가로스크롤 방지 */
   overflow-x: hidden;
@@ -46,7 +57,7 @@ body.before-load {
   height: 52px;
   border-bottom: 1px solid #ddd;
   padding: 0 1rem;
-  position: fixed;
+  position: absolute;
   top: 45px;
   left: 0;
   width: 100%;
@@ -57,7 +68,7 @@ body.before-load {
 .local-nav-sticky .local-nav {
   position: fixed;
   top: 0;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255,255,255,0.1);
   /* for iPhone */
   /* vendor prefix을 붙여줘야함 */
   -webkit-backdrop-filter: saturate(180%) blur(15px);
@@ -200,13 +211,32 @@ body.before-load {
 }
 
 .footer {
+  padding: 50px 0 ;
+  border-top:1px solid #eee;
   display: flex;
-  justify-content: center;
-  align-items: center;
   height: 7rem;
-  background: darkorange;
+  
 }
-
+footer .inner{
+  display: flex;
+  align-items: center;
+  margin: 0 auto;
+}
+footer .site-links{
+  display: flex;
+  
+}
+footer .site-links li{
+  font-size:12px;
+  margin-right: 10px;
+  color: #767676;
+}
+footer .site-links li a{
+  color: #4078c0;
+}
+footer .site-links li a:hover{
+  text-decoration: underline;
+}
 .sticky-elem {
   display: none;
   position: fixed;
@@ -219,6 +249,10 @@ body.before-load {
   top: 0;
   height: 100%;
   /* background: rgba(29, 29, 31,0.3); */
+}
+.sticky-effect-end .sticky-elem{
+  display:none !important;
+
 }
 
 .sticky-elem-canvas canvas {
@@ -235,7 +269,6 @@ body.before-load {
 #show-scene-3 #scroll-section-3 .sticky-elem {
   display: block;
   will-change: transform, opacity;
-
 }
 
 #scroll-section-3 {
@@ -311,6 +344,16 @@ body.before-load {
   fill: transparent;
   animation: loading-circle-ani 1s infinite;
 }
+.normal-content{
+  margin-bottom: 10rem;
+  
+}
+#map{
+  width: auto;
+  height: 400px;
+  margin: 40px -20px 0 -20px;
+
+}
 
 /* media 데스크탑 화면 최소 너비 1024px이하로는 변하지말라는 의미/ 이상이면 변하라는 의미 */
 @media (min-width:1024px) {
@@ -360,8 +403,8 @@ body.before-load {
   }
 
   .canvas-caption {
-    margin-top: -8rem;
+    margin-top: 0;
     padding: 0;
     font-size: 2rem;
   }
-}
+} 

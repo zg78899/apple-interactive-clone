@@ -58,7 +58,7 @@
       }
     },
     {
-      //1
+      //1 정적 콘텐츠
       type: 'normal',
       // heightNum: 5,
       scrollHeight: 0,
@@ -81,7 +81,6 @@
         canvas: document.querySelector('#video-canvas-1'),
         context: document.querySelector('#video-canvas-1').getContext('2d'),
         videoImages: [],
-
       },
       values: {
         canvasOpacity_in: [0, 1, { start: 0, end: 0.1 }],
@@ -155,9 +154,9 @@
       imgElem3.src = sceneInfo[3].objs.imagePath[i];
       sceneInfo[3].objs.images.push(imgElem3)
     }
-    console.log(sceneInfo[3].objs.images)
-    console.log(sceneInfo[0].objs.videoImages)
-    console.log(sceneInfo[0].objs.videoImages)
+    // console.log(sceneInfo[3].objs.images)
+    // console.log(sceneInfo[0].objs.videoImages)
+    // console.log(sceneInfo[0].objs.videoImages)
   }
 
 
@@ -169,6 +168,7 @@
     } else {
       document.body.classList.remove('local-nav-sticky')
     }
+    return;
   }
 
   // 기본적인 레이아웃 함수
@@ -195,7 +195,7 @@
         break;
       }
     }
-    console.log('total', totalScrollHeight)
+    // console.log('total', totalScrollHeight)
     document.body.setAttribute('id', `show-scene-${currentScene}`);
 
     const heightRatio = window.innerHeight / 1080;
@@ -444,7 +444,7 @@
         values.rect2X[1] = values.rect2X[0] + whiteRectWidth;
 
         //3번 section이 시작되는 부분
-        console.log('3start')
+        // console.log('3start')
 
         //fillRect(x축,y축,width,height)
         //좌우 흰 박스 그리기
@@ -546,10 +546,23 @@
       prevScrollHeight += sceneInfo[i].scrollHeight;
 
     }
+    if(delayedYOffset < prevScrollHeight +sceneInfo[currentScene].scrollHeight){
+      document.body.classList.remove('sticky-effect-end');
+    }
+
     //값을 Yoffset이 아닌 감속을 적용한 변수인 deleayedYOffset을 적용한다.
     if (delayedYOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
       enterNewScene = true;
-      currentScene++;
+      //현재의 씬이 마지막 씬일때
+      console.log('currentScene',currentScene);
+      console.log('sceneInfo.length',sceneInfo.length);
+      if(currentScene === sceneInfo.length - 1){
+        document.body.classList.add('sticky-effect-end');
+      }
+      if(currentScene < sceneInfo.length - 1){
+        currentScene++;
+      }
+      
       document.body.setAttribute('id', `show-scene-${currentScene}`);
     }
     //값을 Yoffset이 아닌 감속을 적용한 변수인 deleayedYOffset을 적용한다.
@@ -578,7 +591,7 @@
         const values = sceneInfo[currentScene].values;
 
         let sequence = Math.round(calcValues(values.imageSquence, currrentYOffset));
-        console.log('sequence', sequence);
+        // console.log('sequence', sequence);
         //해당하는 시퀀스 이미지 존재할 때만 그려준다.
         if (objs.videoImages[sequence]) {
           objs.context.drawImage(objs.videoImages[sequence], 0, 0);
@@ -611,21 +624,19 @@
     //laod될때 첫 화면에 가장 첫번째 사진을 보이게 함
     sceneInfo[0].objs.context.drawImage(sceneInfo[0].objs.videoImages[0], 0, 0);
 
-     let tempYOffset = yOffset;
-     let tempScrollCount = 0; //5px씩 몇번했는지 count할 변수
+    let tempYOffset = yOffset;
+    let tempScrollCount = 0; //5px씩 몇번했는지 count할 변수
     //스크롤을 했다면 / 스크롤을 안했다면 자동 스크롤을 하지마라
-     if(yOffset > 0){
-      let siId = setInterval(()=>{
-        window.scrollTo(0,tempYOffset);
-        tempYOffset+=5;
-        if(tempScrollCount > 20){
+    if (yOffset > 0) {
+      let siId = setInterval(() => {
+        window.scrollTo(0, tempYOffset);
+        tempYOffset += 5;
+        if (tempScrollCount > 20) {
           clearInterval(siId);
         }
-        tempScrollCount++; 
-      },20);
-     }
-     
-    
+        tempScrollCount++;
+      }, 20);
+    }
 
     //scroll
     window.addEventListener('scroll', () => {
@@ -644,21 +655,27 @@
     window.addEventListener('resize', () => {
       // landscape 모드에서 대부분의 디바이스의 너비는 900이 넘어간다.
       if (window.innerWidth > 900) {
-        setLayout();
-        //resize 되었을때 sceneInfo[3].values.restStartY = 0 으로 초기화한다.
-        sceneInfo[3].values.rectStartY = 0;
+
+        window.location.reload();
+        // setLayout();
+        // //resize 되었을때 sceneInfo[3].values.restStartY = 0 으로 초기화한다.
+        // sceneInfo[3].values.rectStartY = 0;
       }
     });
 
     //orientationchange 모바일 기기를 방향을 바꿀때 발생하는 이벤트
     //canvas의 크기를 셋팅하는 문제가 있다.
     window.addEventListener('orientationchange', () => {
-    setTimeout(setLayout, 500);
+      scrollTo(0, 0);
+      // setTimeout(setLayout, 500);
+      setTimeout(() => {
+        window.location.reload()
+      }, 500);
     });
 
     //loading에 transitionend라는 이벤트를 바인딩 시켜서 이벤트 객체를 통해 현재 자신의 요소를 removeChild시킨다.
     document.querySelector('.loading').addEventListener('transitionend', (e) => {
-    document.body.removeChild(e.currentTarget);
+      document.body.removeChild(e.currentTarget);
     })
 
   });
