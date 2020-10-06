@@ -102,7 +102,7 @@ body.before-load {
   font-size: 0.8rem;
 }
 
-#scroll-section-0 h1 ,#scroll-section-4 h1{
+#scroll-section-0 h1 ,#scroll-section-1 h1{
   /* 기본 font-size:14px; */
   /* z-index을 사용하기 위해서 position:relative사영 */
   position: relative;
@@ -111,6 +111,12 @@ body.before-load {
   font-size: 4rem;
   text-align: center;
 }
+#scroll-section-0 h1,
+#scroll-section-0 .main-message.a,
+#scroll-section-0 .main-message.b{
+  color:#fff;
+}
+
 /* 각 section 영역 */
 .scroll-section {
   position: relative;
@@ -151,7 +157,7 @@ body.before-load {
 
 }
 
-#scroll-section-2 .main-message {
+#scroll-section-3 .main-message {
   font-size: 3.5rem;
 }
 
@@ -176,12 +182,12 @@ body.before-load {
   opacity: 0;
 }
 
-#scroll-section-2 .b {
+#scroll-section-3 .b {
   top: 10%;
   left: 40%;
 }
 
-#scroll-section-2 .c {
+#scroll-section-3 .c {
   top: 15%;
   left: 45%;
 }
@@ -271,12 +277,12 @@ footer .site-links li a:hover{
 #show-scene-1 #scroll-section-1 .sticky-elem,
 #show-scene-2 #scroll-section-2 .sticky-elem,
 #show-scene-3 #scroll-section-3 .sticky-elem,
-#show-scene-3 #scroll-section-4 .sticky-elem {
+#show-scene-4 #scroll-section-4 .sticky-elem {
   display: block;
   will-change: transform, opacity;
 }
 
-#scroll-section-3 {
+#scroll-section-4 {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -394,15 +400,14 @@ transform: translate(-10%,-50%);
 
 /* media 데스크탑 화면 최소 너비 1024px이하로는 변하지말라는 의미/ 이상이면 변하라는 의미 */
 @media (min-width:1024px) {
-  #scroll-section-0 h1,#scroll-section-4 h1 {
+  #scroll-section-0 h1,#scroll-section-1 h1 {
     font-size: 9vw;
   }
-
   .main-message {
     font-size: 4vw;
   }
   .main-message.b{
-    font-size:4vw;
+    font-size:7vw;
   }
   .main-message.c{
     font-size:10vw;
@@ -417,7 +422,7 @@ transform: translate(-10%,-50%);
     font-size: 6rem;
   }
 
-  #scroll-section-2 .main-message {
+  #scroll-section-3 .main-message {
     font-size: 6vw;
   }
 
@@ -430,12 +435,12 @@ transform: translate(-10%,-50%);
     font-weight: bold;
   }
 
-  #scroll-section-2 .b {
+  #scroll-section-3 .b {
     top: 20%;
     left: 53%;
   }
 
-  #scroll-section-2 .c {
+  #scroll-section-3 .c {
     left: 55%;
   }
 

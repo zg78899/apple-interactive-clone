@@ -2,20 +2,16 @@
 <html lang="ko">
 
 <head>
+  <title>Airmug Pro</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Airmug Pro</title>
- 
-  <!-- 파비콘 -->
   <link rel="icon" href="favicon.png">
   <link rel="apple-touch-icon" href="favicon.png">
 
-   <!-- 구글 폰트 -->
-   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;900&display=swap" rel="stylesheet">
-   <link rel="stylesheet" href="/css/reset.css">
-   <link rel="stylesheet" href="/css/main.css">
-
- 
+  <!-- 구글 폰트 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/reset.css">
+  <link rel="stylesheet" href="/css/main.css">
 </head>
 
 <body class="before-load">
@@ -25,6 +21,7 @@
       <circle cx="50%" cy="50%" r="25"></circle>
     </svg>
   </div>
+
   <div class="container">
     <nav class="global-nav">
       <ul class="global-nav-link">
@@ -42,7 +39,27 @@
         <li><a href="">구입하기</a></li>
       </ul>
     </nav>
+    <!-- scroll-section-0 -->
     <section class="scroll-section" id="scroll-section-0">
+			<h1>Stroke Effect</h1>
+			<object class="sticky-elem pencil-logo" data="images/pencil-logo.svg" type="image/svg+xml"></object>
+			<div class="sticky-elem main-message a">
+				<p>여기에</p>
+			</div>
+			<!-- stroke-dasharray stroke-offset을 통해 pathㄹ 그림을 그림-->
+      <span class="sticky-elem ribbon-path">
+				<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 450">
+					<path class="st1" d="M709,41.5c-194,38-387,122-455,159c-64.13,34.89-73.4,42.42,20,26c82.5-14.5,126.34-33.68,185-38 c47.5-3.5,69.22,7.98-11,39c-75,29-251,98-459,169"></path>
+				</svg>
+			</span>
+			<!-- 옵션으로 글자 -->
+			<div class="sticky-elem main-message b">
+				<p>옵션으로</p>
+			</div>
+			<!--연필 stickey-elem -->
+			<img class="sticky-elem pencil" src="images/pencil.png">
+		</section>
+    <section class="scroll-section" id="scroll-section-1">
       <h1>AirMug Pro</h1>
       <div class="sticky-elem sticky-elem-canvas">
         <canvas id="video-canvas-0" width="1920" height="1080"></canvas>
@@ -62,8 +79,8 @@
         <p>새롭게 입가를<br>찾아온 매혹</p>
       </div>
     </section>
-
-    <section class="scroll-section" id="scroll-section-1">
+    <!-- scroll-section-1 -->
+    <section class="scroll-section" id="scroll-section-2">
       <p class="description">
         <strong>보통 스크롤 영역</strong>
         Lorem ipsum dolor sit amet, consectetur adipisicing elit. Beatae est ipsa minima, eligendi error cum vel dolorum
@@ -82,9 +99,8 @@
         nobis accusantium, aspernatur beatae.
       </p>
     </section>
-
-    <section class="scroll-section" id="scroll-section-2">
-
+    <!-- scroll-section-2 -->
+    <section class="scroll-section" id="scroll-section-3">
       <div class="sticky-elem sticky-elem-canvas">
         <canvas id="video-canvas-1" width="1920" height="1080"></canvas>
       </div>
@@ -111,8 +127,8 @@
         <div class="pin"></div>
       </div>
     </section>
-
-    <section class="scroll-section" id="scroll-section-3">
+    <!-- scroll-section-3  -->
+    <section class="scroll-section" id="scroll-section-4">
       <p class="mid-message">
         <strong>Retina 머그</strong>
         아이디어를 광활하게 펼칠<br>
@@ -130,28 +146,9 @@
         inventore perferendis iusto explicabo animi eos ratione obcaecati.
       </p>
     </section>
+    <!-- scroll-section-4 -->
+   
 
-  <section class="scroll-seciton" id="scroll-section-4">
-    <h1>Stroek Effect</h1>
-    <object class="sticky-elem pencil-logo" data="images/pencil-logo.svg" type="image.svg+xml"></object>
-    <div class="sticky-elem main-messsage a">
-      <p>여기에</p>
-    </div>
-    <span class="sticky-elem ribbon-path">
-      <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 450">
-        <path class="st1" d="M709,41.5c-194,38-387,122-455,159c-64.13,34.89-73.4,42.42,20,26c82.5-14.5,126.34-33.68,185-38 c47.5-3.5,69.22,7.98-11,39c-75,29-251,98-459,169"></path>
-      </svg>
-    </span>
-    <div class="sticky-elem main-message">
-      <p>옵션으로</p>
-    </div>
-    <img class="sticky-elem pencil" src="images/pencil.png" alt="pencil image">
-  </section>
-    <!--  정적인 섹션 추가-->
-    <section class="normal-content">
-      <div id="map">
-      </div>
-    </section>
     <section class="normal-content">
       <p class="mid-message">
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Commodi beatae quibusdam laboriosam, deleniti iure
@@ -164,6 +161,13 @@
         voluptates et reprehenderit.
       </p>
     </section>
+    <!--  정적인 섹션 추가-->
+    <section class="normal-content">
+      <div id="map">
+      </div>
+    </section>
+
+
     <footer class="footer">
       <div class="inner clearfix">
         <ul class="site-links float-right">
