@@ -30,25 +30,25 @@
       },
       values: {
         messageA_opacity_in: [0, 1, { start: 0.1, end: 0.2 }],
-				messageB_opacity_in: [0, 1, { start: 0.4, end: 0.5 }],
-				messageA_translateY_in: [20, 0, { start: 0.1, end: 0.2 }],
-				messageA_opacity_out: [1, 0, { start: 0.3, end: 0.4 }],
-				messageB_opacity_out: [1, 0, { start: 0.6, end: 0.7 }],
-				messageA_translateY_out: [0, -20, { start: 0.3, end: 0.4 }],
-				pencilLogo_width_in: [1000, 200, { start: 0.1, end: 0.4 }],
-				pencilLogo_width_out: [200, 50, { start: 0.4, end: 0.8 }],
-				pencilLogo_translateX_in: [-10, -20, { start: 0.2, end: 0.4 }],
-				pencilLogo_translateX_out: [-20, -50, { start: 0.4, end: 0.8 }],
-				pencilLogo_opacity_out: [1, 0, { start: 0.8, end: 0.9 }],
-				pencil_right: [-10, 70, { start: 0.3, end: 0.8 }],
-				pencil_bottom: [-80, 100, { start: 0.3, end: 0.8 }],
-				pencil_rotate: [-120, -200, { start: 0.3, end: 0.8 }],
-				path_dashoffset_in: [1401, 0, { start: 0.2, end: 0.4 }],
+        messageB_opacity_in: [0, 1, { start: 0.4, end: 0.5 }],
+        messageA_translateY_in: [20, 0, { start: 0.1, end: 0.2 }],
+        messageA_opacity_out: [1, 0, { start: 0.3, end: 0.4 }],
+        messageB_opacity_out: [1, 0, { start: 0.6, end: 0.7 }],
+        messageA_translateY_out: [0, -20, { start: 0.3, end: 0.4 }],
+        pencilLogo_width_in: [1000, 200, { start: 0.1, end: 0.4 }],
+        pencilLogo_width_out: [200, 50, { start: 0.4, end: 0.8 }],
+        pencilLogo_translateX_in: [-10, -20, { start: 0.2, end: 0.4 }],
+        pencilLogo_translateX_out: [-20, -50, { start: 0.4, end: 0.8 }],
+        pencilLogo_opacity_out: [1, 0, { start: 0.8, end: 0.9 }],
+        pencil_right: [-10, 70, { start: 0.3, end: 0.8 }],
+        pencil_bottom: [-80, 100, { start: 0.3, end: 0.8 }],
+        pencil_rotate: [-120, -200, { start: 0.3, end: 0.8 }],
+        path_dashoffset_in: [1401, 0, { start: 0.2, end: 0.4 }],
 				path_dashoffset_out: [0, -1401, { start: 0.6, end: 0.8 }]
       }
     },
     {
-      //1
+      //0
       type: 'sticky',
       heightNum: 5,
       scrollHeight: 0,
@@ -89,7 +89,7 @@
       }
     },
     {
-      //2 정적 콘텐츠
+      //1 정적 콘텐츠
       type: 'normal',
       // heightNum: 5,
       scrollHeight: 0,
@@ -98,7 +98,7 @@
       }
     },
     {
-      //3
+      //2 ->3
       type: 'sticky',
       heightNum: 5,
       scrollHeight: 0,
@@ -134,7 +134,7 @@
         pinC_scaleY: [0.5, 1, { start: 0.87, end: 0.92 }],
       }
     },
-    { //4
+    { //3->4
       type: 'sticky',
       heightNum: 5,
       scrollHeight: 0,
@@ -224,9 +224,11 @@
       }
     }
     // console.log('total', totalScrollHeight)
+    console.log(currentScene);
     document.body.setAttribute('id', `show-scene-${currentScene}`);
 
     const heightRatio = window.innerHeight / 1080;
+
     sceneInfo[1].objs.canvas.style.transform = `translate3d(-50%,-50%,0) scale(${heightRatio})`;
     sceneInfo[3].objs.canvas.style.transform = `translate3d(-50%,-50%,0) scale(${heightRatio})`;
 
@@ -240,6 +242,7 @@
     const scrollRatio = currentYOffset / scrollHeight
     // 분기처리가 필요하다. /3 번째 함수 객체가 있을 경우에
     // console.log(values)
+    // console.log(values.length)
     if (values.length === 3) {
       // start - end 사이의 애니메이션 실행
       const partScrollStart = values[2].start * scrollHeight;
@@ -249,9 +252,11 @@
       //조건에 부합할 때
       if (currentYOffset >= partScrollStart && currentYOffset <= partScrollEnd) {
         rv = (currentYOffset - partScrollStart) / partScrollHeight * (values[1] - values[0]) + values[0]
-      } else if (currentYOffset < partScrollStart) {
+      } 
+      else if (currentYOffset < partScrollStart) {
         rv = values[0]
-      } else if (currentYOffset > partScrollEnd) {
+      }
+       else if (currentYOffset > partScrollEnd) {
         rv = values[1]
       }
 
@@ -273,7 +278,7 @@
     //얼만큼 스크롤했는지의 비율
     const scrollRatio = currrentYOffset / scrollHeight;
 
-    // console.log('cur',currentScene)
+    console.log('cur',currentScene)
     switch (currentScene) {
       case 0:
         if (scrollRatio <= 0.25) {
@@ -295,24 +300,24 @@
         //크기가 커져도 깨지지안흔ㄴ svg의 장점을 살리기 위해 tranform scale대신 width조정
         if (scrollRatio <= 0.4) {
           objs.pencilLogo.style.width = `${calcValues(values.pencilLogo_width_in, currrentYOffset)}vw`;
-          objs.pencilLogo.style.transform = `translate3d(${calcValues(values.pencilLogo_translateX_in, currrentYOffset)}%,-50%)`;
+          objs.pencilLogo.style.transform = `translate(${calcValues(values.pencilLogo_translateX_in, currrentYOffset)}%,-50%)`;
 
         } else {
           objs.pencilLogo.style.width = `${calcValues(values.pencilLogo_width_out, currrentYOffset)}vw`;
-          objs.pencilLogo.style.transform = `translate3d(${calcValues(values.pencilLogo_translateX_out, currrentYOffset)}%,-50%)`;
+          objs.pencilLogo.style.transform = `translate(${calcValues(values.pencilLogo_translateX_out, currrentYOffset)}%,-50%)`;
 
         }
         //빨간 리본 패스(줄 긋기)
         if (scrollRatio <= 0.5) {
-					objs.ribbonPath.style.strokeDashoffset = calcValues(values.path_dashoffset_in,currrentYOffset);
-				} else {
-					objs.ribbonPath.style.strokeDashoffset = calcValues(values.path_dashoffset_out,currrentYOffset);
-				}
+          objs.ribbonPath.style.strokeDashoffset = calcValues(values.path_dashoffset_in, currrentYOffset);
+        } else {
+          objs.ribbonPath.style.strokeDashoffset = calcValues(values.path_dashoffset_out, currrentYOffset);
+        }
 
         objs.pencilLogo.style.opacity = calcValues(values.pencilLogo_opacity_out, currrentYOffset);
-				objs.pencil.style.right = `${calcValues(values.pencil_right, currrentYOffset)}%`;
-				objs.pencil.style.bottom = `${calcValues(values.pencil_bottom, currrentYOffset)}%`;
-				objs.pencil.style.transform = `rotate(${calcValues(values.pencil_rotate, currrentYOffset)}deg)`;
+        objs.pencil.style.right = `${calcValues(values.pencil_right, currrentYOffset)}%`;
+        objs.pencil.style.bottom = `${calcValues(values.pencil_bottom, currrentYOffset)}%`;
+        objs.pencil.style.transform = `rotate(${calcValues(values.pencil_rotate, currrentYOffset)}deg)`;
 
         break;
 
@@ -436,7 +441,7 @@
           //3번째 캔버스의 색을 흰색으로 바꿈 ,fillStyle를 사용한다.
           objs.context.fillStyle = 'white';
           //3번째 캔버스에 이미지 삽입
-          objs.context.drawImage(objs.images[0], 0, 0)
+          objs.context.drawImage(objs.images[0],0,0);
 
           //캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
           const recalculatedInnerWidth = window.innerWidth / canvasScaleRatio;
@@ -623,13 +628,11 @@
     if (delayedYOffset > prevScrollHeight + sceneInfo[currentScene].scrollHeight) {
       enterNewScene = true;
       //현재의 씬이 마지막 씬일때
-      console.log('currentScene', currentScene);
-      console.log('sceneInfo.length', sceneInfo.length);
 
       if (currentScene === sceneInfo.length - 1) {
         document.body.classList.add('sticky-effect-end');
       }
-      if (currentScene < sceneInfo.length - 1) {
+      if (currentScene < sceneInfo.length -1) {
         currentScene++;
       }
 
@@ -654,7 +657,7 @@
     //새로운 씬이 아닐때에만 실행하겠다.
     if (!enterNewScene) {
       //currenttScene 첫번째와 세번째일때만 실행
-      if (currentScene === 0 || currentScene === 2) {
+      if (currentScene === 1 || currentScene === 3) {
         //currentYOffset의 값에 yOffset은 delayedYOffset을 이용하여 가속도가 생긴 값을 사용한다.
         const currrentYOffset = delayedYOffset - prevScrollHeight;
         const objs = sceneInfo[currentScene].objs;
@@ -728,7 +731,7 @@
         // window.location.reload();
         setLayout();
         // //resize 되었을때 sceneInfo[3].values.restStartY = 0 으로 초기화한다.
-        sceneInfo[3].values.rectStartY = 0;
+        sceneInfo[4].values.rectStartY = 0;
       }
     });
 
