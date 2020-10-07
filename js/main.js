@@ -44,11 +44,11 @@
         pencil_bottom: [-80, 100, { start: 0.3, end: 0.8 }],
         pencil_rotate: [-120, -200, { start: 0.3, end: 0.8 }],
         path_dashoffset_in: [1401, 0, { start: 0.2, end: 0.4 }],
-				path_dashoffset_out: [0, -1401, { start: 0.6, end: 0.8 }]
+        path_dashoffset_out: [0, -1401, { start: 0.6, end: 0.8 }]
       }
     },
     {
-      //0
+      //0->1
       type: 'sticky',
       heightNum: 5,
       scrollHeight: 0,
@@ -64,7 +64,8 @@
         videoImages: [],
       },
       values: {
-        canvasOpacity: [1, 0, { start: 0.9, end: 1 }],
+        canvasOpacity_in: [0, 1, { start: 0, end: 0.1 }],
+        canvasOpacity_out: [1, 0, { start: 0.9, end: 1 }],
         videoImageCount: 300, //이미지 개수
         imageSquence: [0, 299], //이미지순서 
         messageA_opacity_in: [0, 1, { start: 0.1, end: 0.2 }],
@@ -89,7 +90,7 @@
       }
     },
     {
-      //1 정적 콘텐츠
+      //1 정적 콘텐츠->2
       type: 'normal',
       // heightNum: 5,
       scrollHeight: 0,
@@ -155,7 +156,7 @@
         rectStartY: 0,
         canvasCaption_opacity: [0, 1, { start: 0, end: 0 }],
         canvasCaption_translateY: [20, 0, { start: 0, end: 0 }],
-        canvas_sacale: [0, 0, { start: 0, end: 0 }],
+        canvas_scale: [0, 0, { start: 0, end: 0 }],
         BlendHeight: [0, 0, { start: 0, end: 0 }], ///애니메이션이 시작되는 순간은 캔버스가 위에 닿을때 
       }
     },
@@ -193,8 +194,21 @@
   function checkMenu() {
     if (yOffset > 44) {
       document.body.classList.add('local-nav-sticky');
+      // const localNav = document.querySelectorAll('.local-nav-link li a');
+      // for (let i = 0; i < localNav.length; i++) {
+      //   localNav[i].style.color = `black`;
+      // }
     } else {
-      document.body.classList.remove('local-nav-sticky')
+      document.body.classList.remove('local-nav-sticky');
+      //nav의 색깔 
+      const globalNav = document.querySelectorAll('.global-nav-link li a')
+      for (let i = 0; i < globalNav.length; i++) {
+        globalNav[i].style.color = `#fff`;
+      }
+      // const localNav = document.querySelectorAll('.local-nav-link li a');
+      // for (let i = 0; i < localNav.length; i++) {
+      //   localNav[i].style.color = `#fff`;
+      // }
     }
     return;
   }
@@ -252,11 +266,11 @@
       //조건에 부합할 때
       if (currentYOffset >= partScrollStart && currentYOffset <= partScrollEnd) {
         rv = (currentYOffset - partScrollStart) / partScrollHeight * (values[1] - values[0]) + values[0]
-      } 
+      }
       else if (currentYOffset < partScrollStart) {
         rv = values[0]
       }
-       else if (currentYOffset > partScrollEnd) {
+      else if (currentYOffset > partScrollEnd) {
         rv = values[1]
       }
 
@@ -278,9 +292,10 @@
     //얼만큼 스크롤했는지의 비율
     const scrollRatio = currrentYOffset / scrollHeight;
 
-    console.log('cur',currentScene)
+    console.log('cur', currentScene)
     switch (currentScene) {
       case 0:
+
         if (scrollRatio <= 0.25) {
           //in 
           objs.messageA.style.opacity = calcValues(values.messageA_opacity_in, currrentYOffset);
@@ -314,6 +329,19 @@
           objs.ribbonPath.style.strokeDashoffset = calcValues(values.path_dashoffset_out, currrentYOffset);
         }
 
+        //네브라인의 글씨 색깔
+        if (scrollRatio <= 0.385) {
+          const localNav = document.querySelectorAll('.local-nav-link li a');
+          for (let i = 0; i < localNav.length; i++) {
+            localNav[i].style.color = `#fff`;
+          }
+        } else {
+          const localNav = document.querySelectorAll('.local-nav-link li a');
+          for (let i = 0; i < localNav.length; i++) {
+            localNav[i].style.color = `black`;
+          }
+        }
+        
         objs.pencilLogo.style.opacity = calcValues(values.pencilLogo_opacity_out, currrentYOffset);
         objs.pencil.style.right = `${calcValues(values.pencil_right, currrentYOffset)}%`;
         objs.pencil.style.bottom = `${calcValues(values.pencil_bottom, currrentYOffset)}%`;
@@ -329,8 +357,13 @@
         // //화면에 이미지를 순서대로 보이게 함
         // objs.context.drawImage(objs.videoImages[sequence], 0, 0);
         //canvas의 마지막 opacity부분
+        if (scrollRatio <= 0.12) {
+          objs.canvas.style.opacity = calcValues(values.canvasOpacity_in, currrentYOffset);
+        } else {
 
-        objs.canvas.style.opacity = calcValues(values.canvasOpacity, currrentYOffset);
+          objs.canvas.style.opacity = calcValues(values.canvasOpacity_out, currrentYOffset);
+        }
+
 
         // console.log('sequence', sequence);
 
@@ -420,8 +453,8 @@
         //currentScene 3에서 쓰는 캔버스를 미리 그려주기 시작
         //const는 블록레벨 스코프를 가지기 때문에 변수를 지켜줄수 있음
         if (scrollRatio > 0.9) {
-          const objs = sceneInfo[3].objs;
-          const values = sceneInfo[3].values;
+          const objs = sceneInfo[4].objs;
+          const values = sceneInfo[4].values;
           const widthRatio = window.innerWidth / objs.canvas.width;
           const heightRatio = window.innerHeight / objs.canvas.height;
           //transform scale 조정
@@ -441,7 +474,7 @@
           //3번째 캔버스의 색을 흰색으로 바꿈 ,fillStyle를 사용한다.
           objs.context.fillStyle = 'white';
           //3번째 캔버스에 이미지 삽입
-          objs.context.drawImage(objs.images[0],0,0);
+          objs.context.drawImage(objs.images[0], 0, 0);
 
           //캔버스 사이즈에 맞춰 가정한 innerWidth와 innerHeight
           const recalculatedInnerWidth = window.innerWidth / canvasScaleRatio;
@@ -573,31 +606,31 @@
           //이미지 블랜드가 끝난 이후에  
           if (scrollRatio > values.BlendHeight[2].end) {
             //초기값
-            values.canvas_sacale[0] = canvasScaleRatio;
+            values.canvas_scale[0] = canvasScaleRatio;
             //작아진 크기의 canvas의 비율을 브라우정 화면을 기준으로 해줘야한다.
-            values.canvas_sacale[1] = document.body.offsetWidth / (1.5 * objs.canvas.width);
-            values.canvas_sacale[2].start = values.BlendHeight[2].end;
+            values.canvas_scale[1] = document.body.offsetWidth / (1.5 * objs.canvas.width);
+            values.canvas_scale[2].start = values.BlendHeight[2].end;
             //구간의 비율을 정함
-            values.canvas_sacale[2].end = values.canvas_sacale[2].start + 0.2;
-            console.log('초기값,끝 값', values.canvas_sacale[0], values.canvas_sacale[1]);
+            values.canvas_scale[2].end = values.canvas_scale[2].start + 0.2;
+            console.log('초기값,끝 값', values.canvas_scale[0], values.canvas_scale[1]);
 
-            objs.canvas.style.transform = `scale(${calcValues(values.canvas_sacale, currrentYOffset)})`;
+            objs.canvas.style.transform = `scale(${calcValues(values.canvas_scale, currrentYOffset)})`;
             objs.canvas.style.marginTop = 0;
           }
 
           //시점을 나눠줌
           //values.canvas_scale[2].end의 끝난 이후
           //초기에 스크롤을 section3의 영역까지 내리 않았다면 
-          //values.canvas_sacale[2].end의 값은 0이기때문에 방어 코드가 필요
-          if (scrollRatio > values.canvas_sacale[2].end &&
-            values.canvas_sacale[2].end > 0) {
+          //values.canvas_scale[2].end의 값은 0이기때문에 방어 코드가 필요
+          if (scrollRatio > values.canvas_scale[2].end &&
+            values.canvas_scale[2].end > 0) {
             console.log('스크롤 시작')
             objs.canvas.classList.remove('sticky');
             objs.canvas.style.marginTop = `${scrollHeight * 0.4}px`;
 
 
             //opacity 시작 시점
-            values.canvasCaption_opacity[2].start = values.canvas_sacale[2].end;
+            values.canvasCaption_opacity[2].start = values.canvas_scale[2].end;
             values.canvasCaption_opacity[2].end = values.canvasCaption_opacity[2].start + 0.1;
             values.canvasCaption_translateY[2].start = values.canvasCaption_opacity[2].start;
             values.canvasCaption_translateY[2].end = values.canvasCaption_opacity[2].end;
@@ -632,7 +665,7 @@
       if (currentScene === sceneInfo.length - 1) {
         document.body.classList.add('sticky-effect-end');
       }
-      if (currentScene < sceneInfo.length -1) {
+      if (currentScene < sceneInfo.length - 1) {
         currentScene++;
       }
 
@@ -683,7 +716,6 @@
 
   ///이벤트 핸들러
 
-
   //DOMContentLoaded가 실행시간이 더 빠르다.이미지 등 리소스가 로드되지않아도 html만 로드가 되어도 화면에 보여준다.
   //window.addEventListener('DOMContentLoaded',setLayout);
   //load 중일때는 값들이 초기화가 되었지읺는다.
@@ -694,6 +726,16 @@
     //여기서 loading을 바로 지우면 자연스럽게 지우기 힘들다.document.body.removeChlild(document.querySelector('.loading'));
     //트랜지션이 끝이 나면 loading 요소를 제거해 준다.
     setLayout();
+
+    const localNav = document.querySelectorAll('.local-nav-link li a');
+    for (let i = 0; i < localNav.length; i++) {
+      localNav[i].style.color = `#fff`;
+    }
+    checkMenu();
+
+    //load 될때 첫 화면을 가장 첫번째 상태가 보이게함
+    sceneInfo[0].objs.pencilLogo.style.width = `1000vw`;
+    sceneInfo[0].objs.pencilLogo.style.tranform = `translate(-10%,-50%)`;
     //laod될때 첫 화면에 가장 첫번째 사진을 보이게 함
     sceneInfo[1].objs.context.drawImage(sceneInfo[1].objs.videoImages[0], 0, 0);
 
@@ -728,10 +770,10 @@
     window.addEventListener('resize', () => {
       // landscape 모드에서 대부분의 디바이스의 너비는 900이 넘어간다.
       if (window.innerWidth > 900) {
-        // window.location.reload();
-        setLayout();
+        window.location.reload();
+        // setLayout();
         // //resize 되었을때 sceneInfo[3].values.restStartY = 0 으로 초기화한다.
-        sceneInfo[4].values.rectStartY = 0;
+        // sceneInfo[4].values.rectStartY = 0;
       }
     });
 
@@ -739,10 +781,10 @@
     //canvas의 크기를 셋팅하는 문제가 있다.
     window.addEventListener('orientationchange', () => {
       scrollTo(0, 0);
-      setTimeout(setLayout, 500);
-      // setTimeout(() => {
-      //   window.location.reload()
-      // }, 500);
+      // setTimeout(setLayout, 500);
+      setTimeout(() => {
+        window.location.reload()
+      }, 500);
     });
 
     //loading에 transitionend라는 이벤트를 바인딩 시켜서 이벤트 객체를 통해 현재 자신의 요소를 removeChild시킨다.
