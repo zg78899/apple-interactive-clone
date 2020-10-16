@@ -37,7 +37,6 @@
         rafId = requestAnimationFrame(loop);
         rafState = true;
       }
-      
     });
     function loop() {
       delayedYoffset = delayedYoffset + (pageYOffset - delayedYoffset) * acc;
@@ -49,37 +48,8 @@
         cancelAnimationFrame(rafId);
         rafState = false;
       }
-
-      
     };
     loop();
-
-  </script>
-  <script>
-   const $box = document.querySelector('.box');
-   let delayedYoffset = 0;
-   let acc = 0.1;
-   let timer;
-   let timerState;
-
-   window.addEventListener('scroll',()=>{
-    if(!timerState){
-      timer = requestAnimationFrame(loop);
-      timerState = true;
-    }
-   });
-   function loop(){
-    delayedYoffset = delayedYoffset+(pageYOffset - delayedYoffset)* acc;
-   $box.style.width = `${delayedYoffset}px`;
-   console.log('loop');//
-   timer = requestAnimationFrame(loop);//loop함수가 계속해서 실행됨
-   //조건일때 requestAnimationFrame 멈춤
-   if(Math.abs(pageYOffset - delayedYoffset) <1){
-    cancelAnimationFrame(timer);
-    timerState = false;
-   }
-   };
-   loop()
   </script>
  
 </body>
